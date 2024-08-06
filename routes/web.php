@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\ChangePasswordController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Password;
+use App\Http\Controllers\ResetController;
+use App\Http\Controllers\PasienController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\ResetController;
 use App\Http\Controllers\SessionsController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChangePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,3 +87,12 @@ Route::group(['middleware' => 'guest'], function () {
 Route::get('/login', function () {
     return view('session/login-session');
 })->name('login');
+
+Route::prefix('info-pasien')->group(function () {
+    Route::get('/', [PasienController::class, 'index'])->name('pasiens.index');
+    Route::get('create', [PasienController::class, 'create'])->name('pasiens.create');
+    Route::post('store', [PasienController::class, 'store'])->name('pasiens.store');
+    Route::get('{id}/edit', [PasienController::class, 'edit'])->name('pasiens.edit');
+    Route::get('{id}', [PasienController::class, 'show'])->name('pasiens.show');
+    Route::delete('{id}', [PasienController::class, 'destroy'])->name('pasiens.destroy');
+});
