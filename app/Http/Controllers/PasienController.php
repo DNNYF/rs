@@ -29,61 +29,69 @@ class PasienController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(
-            [
-                'alamat_lengkap' => 'required',
-                'alamat' => 'required',
-                'tgl_lahir' => 'required|date',
-                'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
-                'tinggi_badan' => 'require|integer',
-                'berat_badan' => 'required|integer',
-                'golongan_darah' => 'required',
-            ]
-        );
+        $request->validate([
+            'nama_lengkap' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'tgl_lahir' => 'required|date',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'tb' => 'required|integer',
+        ]);
+
         Pasien::create($request->all());
-        return redirect() -> route('pasiens.index')->with('success', 'Pasie Berhasil Ditambahkan!');
+        return redirect()->route('pasiens.index')->with('success', 'Pasien Berhasil Ditambahkan!');
     }
+
 
     /**
      * Display the specified resource.
      */
-    public function show(Pasien $pasien)
+    public function show($id)
     {
+        $pasien = Pasien::findOrFail($id);
         return view('pasiens.show', compact('pasien'));
     }
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Pasien $pasien)
+    public function edit($id)
     {
-        return view('pasien.edit', compact('pasien'));
+        $pasien = Pasien::findOrFail($id);
+        return view('pasiens.edit', compact('pasien'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Pasien $pasien)
+    public function update(Request $request, $id)
     {
         $request->validate(
             [
-                'alamat_lengkap' => 'required',
-                'alamat' => 'required',
+                'nama_lengkap' => 'required|string|max:255',
+                'alamat' => 'required|string',
                 'tgl_lahir' => 'required|date',
-                'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
-                'tinggi_badan' => 'require|integer',
-                'berat_badan' => 'required|integer',
-                'golongan_darah' => 'required',
-            ]);
-            $pasien->update($request->all());
+                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                'tb' => 'required|integer',
+            ]
+
+        );
+        $pasien = Pasien::findOrFail($id);
+        $pasien->update($request->all());
+
+        return redirect()->route('pasiens.index')->with('success', 'Data Pasien Berhasil Diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pasien $pasien)
+    public function destroy($id)
     {
-        $pasien->delete();
-        return redirect()->route('pasien.index')->with('Success', 'Data Pasien Berhasil Dihapus!');
+        $pasien = Pasien::find($id);
+
+        if ($pasien) {
+            $pasien->delete();
+            return redirect()->route('pasiens.index')->with('success', 'Data Pasien Berhasil Dihapus!');
+        } else {
+            return redirect()->route('pasiens.index')->with('error', 'Data Pasien Tidak Ditemukan!');
+        }
     }
 }

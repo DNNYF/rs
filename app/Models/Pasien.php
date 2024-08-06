@@ -16,8 +16,6 @@ class Pasien extends Model
         'alamat',
         'tgl_lahir',
         'jenis_kelamin',
-        'tinggi_badan',
-        'berat_badan',
-        'golongan_darah',
+        'tb',
     ];
 }

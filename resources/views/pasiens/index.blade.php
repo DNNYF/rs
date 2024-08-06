@@ -4,6 +4,12 @@
 
 <h1>Daftar Pasien</h1>
     <a href="{{ route('pasiens.create') }}" class="btn btn-primary">Tambah Pasien Baru</a>
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
     <table class="table">
         <thead>
             <tr>
@@ -24,11 +30,12 @@
                     <td>
                         <a href="{{ route('pasiens.show', $pasien->id) }}" class="btn btn-info">Lihat</a>
                         <a href="{{ route('pasiens.edit', $pasien->id) }}" class="btn btn-warning">Edit</a>
-                        <form action="{{ route('pasiens.destroy', $pasien->id) }}" method="POST" style="display: inline-block;">
+                        <form action="{{ route('pasiens.destroy', $pasien->id) }}" style="display:inline-block;" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
                         </form>
+                        
                     </td>
                 </tr>
             @endforeach

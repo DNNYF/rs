@@ -68,6 +68,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/login', function () {
 		return view('dashboard');
 	})->name('sign-up');
+
+	Route::prefix('info-pasien')->group(function () {
+		Route::get('/', [PasienController::class, 'index'])->name('pasiens.index');
+		Route::get('create', [PasienController::class, 'create'])->name('pasiens.create');
+		Route::post('store', [PasienController::class, 'store'])->name('pasiens.store');
+		Route::get('{pasien}/edit', [PasienController::class, 'edit'])->name('pasiens.edit');
+		Route::put('{id}', [PasienController::class, 'update'])->name('pasiens.update');
+		Route::get('{id}', [PasienController::class, 'show'])->name('pasiens.show');
+		Route::delete('{id}', [PasienController::class, 'destroy'])->name('pasiens.destroy');
+	});
 });
 
 
@@ -88,11 +98,6 @@ Route::get('/login', function () {
     return view('session/login-session');
 })->name('login');
 
-Route::prefix('info-pasien')->group(function () {
-    Route::get('/', [PasienController::class, 'index'])->name('pasiens.index');
-    Route::get('create', [PasienController::class, 'create'])->name('pasiens.create');
-    Route::post('store', [PasienController::class, 'store'])->name('pasiens.store');
-    Route::get('{id}/edit', [PasienController::class, 'edit'])->name('pasiens.edit');
-    Route::get('{id}', [PasienController::class, 'show'])->name('pasiens.show');
-    Route::delete('{id}', [PasienController::class, 'destroy'])->name('pasiens.destroy');
-});
+
+
+
