@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="mb-4">Medications</h2>
+            <h2 class="mb-4">Obat</h2>
 
             @if (session('success'))
                 <div class="alert alert-success">
@@ -12,26 +12,32 @@
                 </div>
             @endif
 
+            <!-- Button to go to the Add Obat page -->
+            <a href="{{ route('obat.create') }}" class="btn btn-primary mb-4">Add New Obat</a>
+
             <div class="card">
                 <div class="card-header">
-                    <h4>Available Medications</h4>
+                    <h4>Available Obat</h4>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Name</th>
                                 <th>Quantity</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($medications as $medication)
+                            @foreach ($obats as $obat)
                                 <tr>
-                                    <td>{{ $medication->name }}</td>
-                                    <td>{{ $medication->quantity }}</td>
+                                    <td>{{ $obat->id }}</td>
+                                    <td>{{ $obat->name }}</td>
+                                    <td>{{ $obat->quantity }}</td>
                                     <td>
-                                        <form action="{{ route('medications.destroy', $medication->id) }}" method="POST">
+                                        <a href="{{ route('obat.edit', $obat->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                        <form action="{{ route('obat.destroy', $obat->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">Remove</button>
@@ -41,26 +47,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-            </div>
-
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h4>Add New Medication</h4>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('medications.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Medication Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="quantity" class="form-label">Quantity</label>
-                            <input type="number" class="form-control" id="quantity" name="quantity" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Add Medication</button>
-                    </form>
                 </div>
             </div>
         </div>

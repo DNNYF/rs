@@ -10,6 +10,7 @@ use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\ObatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('virtual-reality', function () {
 		return view('virtual-reality');
 	})->name('virtual-reality');
+
 
     Route::get('static-sign-in', function () {
 		return view('static-sign-in');
@@ -100,4 +102,9 @@ Route::get('/login', function () {
 
 
 
-
+Route::get('/obat', [ObatController::class, 'index'])->name('obat.index');
+Route::get('/obat/create', [ObatController::class, 'create'])->name('obat.create');
+Route::post('/obat', [ObatController::class, 'store'])->name('obat.store');
+Route::get('/obat/{id}/edit', [ObatController::class, 'edit'])->name('obat.edit');
+Route::put('/obat/{id}', [ObatController::class, 'update'])->name('obat.update');
+Route::delete('/obat/{id}', [ObatController::class, 'destroy'])->name('obat.destroy');
