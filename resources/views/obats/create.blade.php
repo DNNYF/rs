@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="mb-4">Add New Obat</h2>
+            <h2 class="mb-4">Tambah Obat Baru</h2>
 
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -18,21 +18,21 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h4>Add Obat</h4>
+                    <h4>Tambah Obat</h4>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('obat.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label">Obat Name</label>
+                            <label for="name" class="form-label">Nama Obat</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="quantity" class="form-label">Quantity</label>
+                            <label for="quantity" class="form-label">Stok</label>
                             <input type="number" class="form-control" id="quantity" name="quantity" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Add Obat</button>
-                        <a href="{{ route('obat.index') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Tambahkan</button>
+                        <a href="{{ route('obat.index') }}" class="btn btn-secondary">Batal</a>
                     </form>
                 </div>
             </div>

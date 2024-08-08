@@ -27,7 +27,7 @@ class ObatController extends Controller
 
         Obat::create($request->only(['name', 'quantity']));
 
-        return redirect()->route('obat.index')->with('success', 'Obat added successfully.');
+        return redirect()->route('obat.index')->with('success', 'Obat Telah Ditambahkan.');
     }
 
     public function edit($id)
@@ -46,12 +46,12 @@ class ObatController extends Controller
         $obat = Obat::findOrFail($id);
         $obat->update($request->only(['name', 'quantity']));
 
-        return redirect()->route('obat.index')->with('success', 'Obat updated successfully.');
+        return redirect()->route('obat.index')->with('info', 'Obat Telah Diupdate.');
     }
 
     public function destroy($id)
     {
         Obat::destroy($id);
-        return redirect()->route('obat.index')->with('success', 'Obat removed successfully.');
+        return redirect()->route('obat.index')->with('warning', 'Obat Telah Dihapus.');
     }
 }

@@ -25,15 +25,15 @@
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
-                            <label for="name" class="form-label">Obat Name</label>
+                            <label for="name" class="form-label">Nama Obat</label>
                             <input type="text" class="form-control" id="name" name="name" value="{{ $obat->name }}" required>
                         </div>
                         <div class="mb-3">
-                            <label for="quantity" class="form-label">Quantity</label>
+                            <label for="quantity" class="form-label">Stok</label>
                             <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $obat->quantity }}" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Update Obat</button>
-                        <a href="{{ route('obat.index') }}" class="btn btn-secondary">Cancel</a>
+                        <a href="{{ route('obat.index') }}" class="btn btn-secondary">Batal</a>
                     </form>
                 </div>
             </div>
