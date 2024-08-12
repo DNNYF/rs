@@ -10,9 +10,20 @@ class PasienController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pasiens = Pasien::all();
+        $search = $request->input('search');
+
+        $pasiens = Pasien::query()
+            ->when($search, function ($query, $search) {
+                $query->where('nama_lengkap', 'like', "%{$search}%")
+                    ->orWhere('alamat', 'like', "%{$search}%")
+                    ->orWhere('tgl_lahir', 'like', "%{$search}%")
+                    ->orWhere('jenis_kelamin', 'like', "%{$search}%");
+            })
+            ->get();
+
+
         return view('pasiens.index', ['pasiens' => $pasiens]);
     }
 

@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Livewire\PendaftaranWizard;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\ResetController;
+use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
@@ -78,6 +80,23 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('{id}', [PasienController::class, 'show'])->name('pasiens.show');
 		Route::delete('{id}', [PasienController::class, 'destroy'])->name('pasiens.destroy');
 	});
+	Route::prefix('info-dokter')->group(function(){
+		Route::get('/', [DokterController::class, 'index'])->name('dokters.index');
+		Route::get('/create', [DokterController::class, 'create'])->name('dokters.create');
+		Route::post('/store', [DokterController::class, 'store'])->name('dokters.store'); 
+		Route::get('{dokter}/edit', [DokterController::class, 'edit'])->name('dokters.edit');
+		Route::put('{id}', [DokterController::class, 'update'])->name('dokters.update');
+		Route::get('{id}', [DokterController::class, 'show'])->name('dokters.show');
+		Route::delete('{id}', [DokterController::class, 'destroy'])->name('dokters.destroy'); 
+	});
+	
+	// Route::get('/rawat-jalan', function () {
+    //     return view('rawat-jalan.index');
+    // })->name('rawat-jalan.index');
+
+	// Route::get('/rawat-jalan', PendaftaranWizard::class)->name('rawat-jalan.index');
+
+
 });
 
 

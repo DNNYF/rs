@@ -2,8 +2,8 @@
 
 @section('content')
 
-<h1>Daftar Pasien</h1>
-    <a href="{{ route('pasiens.create') }}" class="btn btn-primary">Tambah Pasien Baru</a>
+<h1>Daftar Dokter</h1>
+    <a href="{{ route('dokters.create') }}" class="btn btn-primary">Tambah Dokter Baru</a>
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
@@ -11,7 +11,6 @@
     </div>
 @endif
 
-{{-- search bar here --}}
 <div class="card mb-4">
     <div class="card-body">
         <form action="{{ route('pasiens.index') }}" method="GET">
@@ -28,24 +27,24 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Nama Lengkap</th>
-                    <th>Alamat</th>
-                    <th>Tanggal Lahir</th>
-                    <th>Jenis Kelamin</th>
-                    <th>Aksi</th>
+                    <th scope="col">Nama Lengkap</th>
+                    <th scope="col">Alamat</th>
+                    <th scope="col">Spesialis</th>
+                    <th scope="col">Jenis Kelamin</th>
+                    <th scope="col">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($pasiens as $pasien)
+                @foreach($dokters as $dokter)
                     <tr>
-                        <td>{{ $pasien->nama_lengkap }}</td>
-                        <td>{{ $pasien->alamat }}</td>
-                        <td>{{ $pasien->tgl_lahir }}</td>
-                        <td>{{ $pasien->jenis_kelamin }}</td>
+                        <td scope="row">{{ $dokter->nama_dokter }}</td>
+                        <td>{{ $dokter->alamat }}</td>
+                        <td>{{ $dokter->spesialis }}</td>
+                        <td>{{ $dokter->jenis_kelamin }}</td>
                         <td>
-                            <a href="{{ route('pasiens.show', $pasien->id) }}" class="btn btn-info">Lihat</a>
-                            <a href="{{ route('pasiens.edit', $pasien->id) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ route('pasiens.destroy', $pasien->id) }}" style="display:inline-block;" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                            <a href="{{ route('dokters.show', $dokter->id) }}" class="btn btn-info">Lihat</a>
+                            <a href="{{ route('dokters.edit', $dokter->id) }}" class="btn btn-warning">Edit</a>
+                            <form action="{{ route('dokters.destroy', $dokter->id) }}" style="display:inline-block;" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Hapus</button>

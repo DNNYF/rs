@@ -31,6 +31,27 @@
                 @yield('content')
             </div>
 
+        @elseif (\Request::is('info-pasien'))  
+            @include('layouts.navbars.auth.sidebar')
+            <div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
+                @include('layouts.navbars.auth.nav')
+                @yield('content')
+            </div>
+
+        @elseif (\Request::is('info-dokter'))  
+            @include('layouts.navbars.auth.sidebar')
+            <div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
+                @include('layouts.navbars.auth.nav')
+                @yield('content')
+            </div>
+
+        @elseif (\Request::is('rawat-jalan'))  
+            @include('layouts.navbars.auth.sidebar')
+            <div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
+                @include('layouts.navbars.auth.nav')
+                @yield('content')
+            </div>
+
         @elseif (\Request::is('virtual-reality')) 
             @include('layouts.navbars.auth.nav')
             <div class="border-radius-xl mt-3 mx-3 position-relative" style="background-image: url('../assets/img/vr-bg.jpg') ; background-size: cover;">
@@ -55,6 +76,20 @@
         {{-- @include('components.fixed-plugin') --}}
     @endif
 
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var alert = document.querySelector('.alert');
+                if (alert) {
+                    alert.classList.remove('show');
+                    alert.classList.add('fade');
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 500); 
+                }
+            }, 2000);
+        });
+
+    </script>
 
 @endsection
