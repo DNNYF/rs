@@ -85,13 +85,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::prefix('info-dokter')->group(function(){
 		Route::get('/', [DokterController::class, 'index'])->name('dokters.index');
 		Route::get('/create', [DokterController::class, 'create'])->name('dokters.create');
-		Route::post('/store', [DokterController::class, 'store'])->name('dokters.store'); 
+		Route::post('/store', [DokterController::class, 'store'])->name('dokters.store');
 		Route::get('{dokter}/edit', [DokterController::class, 'edit'])->name('dokters.edit');
 		Route::put('{id}', [DokterController::class, 'update'])->name('dokters.update');
 		Route::get('{id}', [DokterController::class, 'show'])->name('dokters.show');
-		Route::delete('{id}', [DokterController::class, 'destroy'])->name('dokters.destroy'); 
+		Route::delete('{id}', [DokterController::class, 'destroy'])->name('dokters.destroy');
 	});
-	
+
 	// Route::get('/rawat-jalan', function () {
     //     return view('rawat-jalan.index');
     // })->name('rawat-jalan.index');
@@ -120,6 +120,7 @@ Route::get('/login', function () {
 })->name('login');
 
 
+Route::resource('obat', ObatController::class);
 
 Route::get('/obat', [ObatController::class, 'index'])->name('obat.index');
 Route::get('/obat/create', [ObatController::class, 'create'])->name('obat.create');

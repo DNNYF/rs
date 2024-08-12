@@ -21,16 +21,23 @@
                     <h4>Edit Obat</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('obat.update', $obat->id) }}" method="POST">
+                    <form action="{{ route('obat.update', $obat->id_obat) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nama Obat</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ $obat->name }}" required>
+                            <label for="nama_obat" class="form-label">Nama Obat</label>
+                            <input type="text" class="form-control" id="nama_obat" name="nama_obat" value="{{ old('nama_obat', $obat->nama_obat) }}" required>
                         </div>
+
+                        <!-- Paste the stok_obat field here -->
                         <div class="mb-3">
-                            <label for="quantity" class="form-label">Stok</label>
-                            <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $obat->quantity }}" required>
+                            <label for="stok_obat" class="form-label">Stok</label>
+                            <input type="number" class="form-control" id="stok_obat" name="stok_obat" value="{{ old('stok_obat', $obat->stok_obat ?? '') }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="harga_obat" class="form-label">Harga Obat</label>
+                            <input type="number" class="form-control" id="harga_obat" name="harga_obat" value="{{ old('harga_obat', $obat->harga_obat) }}" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Update Obat</button>
                         <a href="{{ route('obat.index') }}" class="btn btn-secondary">Batal</a>

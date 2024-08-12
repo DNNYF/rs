@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,9 +13,10 @@ class CreateObatsTable extends Migration
     public function up()
     {
         Schema::create('obats', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->integer('quantity');
+            $table->id('id_obat');
+            $table->string('nama_obat');
+            $table->integer('stok_obat');
+            $table->decimal('harga_obat', 15, 2);
             $table->timestamps();
         });
     }
