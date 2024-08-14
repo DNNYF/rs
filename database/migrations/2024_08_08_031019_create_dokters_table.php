@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('spesialis');
             $table->string('nama_spesialis');
             // $table->string('alamat');
+            $table->bigInteger('biaya_pelayanan');
             $table->string('tlp');
             $table->string('email');
             $table->timestamps();

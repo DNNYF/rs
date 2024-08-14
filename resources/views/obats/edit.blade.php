@@ -26,7 +26,7 @@
                         @method('PUT')
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama Obat</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ $obat->name }}" required>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ $obat->nama_obat }}" required>
                         </div>
                         <div class="mb-3">
                             <label for="quantity" class="form-label">Stok</label>

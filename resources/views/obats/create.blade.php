@@ -25,7 +25,7 @@
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama Obat</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                            <input type="text" class="form-control" id="nama_obat" name="nama_obat" required>
                         </div>
                         <div class="mb-3">
                             <label for="quantity" class="form-label">Stok</label>

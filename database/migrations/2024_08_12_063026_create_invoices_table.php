@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_pasien');
+            $table->decimal('total_tagihan', 15, 2); 
             $table->timestamps();
         });
     }

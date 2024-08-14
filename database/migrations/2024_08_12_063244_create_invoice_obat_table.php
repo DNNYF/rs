@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pemeriksaans', function (Blueprint $table) {
+        Schema::create('invoice_obat', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pasien_id')->constrained();
-            $table->foreignId('dokter_id')->constrained();
-            $table->text('keluhan')->nullable();
-            $table->decimal('total_biaya', 10, 2);
-            $table->enum('status', ['proses', 'selesai'])->default('proses');
+            $table->foreignId('pemeriksaan_id')->constrained()->onDelete('cascade');
+            $table->foreignId('obat_id')->constrained()->onDelete('cascade');
+            $table->integer('jumlah');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pemeriksaans');
+        Schema::dropIfExists('invoice_obat');
     }
 };

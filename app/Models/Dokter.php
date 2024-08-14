@@ -13,6 +13,7 @@ class Dokter extends Model
         'sip',
         'spesialis',
         'nama_spesialis',
+        'biaya_pelayanan',
         'alamat',
         'tlp',
         'email',

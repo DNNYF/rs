@@ -46,7 +46,7 @@
                             @foreach ($obats as $obat)
                                 <tr>
                                     <td>{{ $obat->id }}</td>
-                                    <td>{{ $obat->name }}</td>
+                                    <td>{{ $obat->nama_obat }}</td>
                                     <td>{{ $obat->quantity }}</td>
                                     <td>
                                         <a href="{{ route('obat.edit', $obat->id) }}" class="btn btn-warning btn-sm">Edit</a>

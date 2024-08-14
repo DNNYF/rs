@@ -1,9 +1,11 @@
 <?php
 
+use App\Livewire\Wizard;
 use Illuminate\Http\Request;
 use App\Livewire\PendaftaranWizard;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ObatController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\DokterController;
@@ -11,8 +13,8 @@ use App\Http\Controllers\PasienController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\RawatJalanController;
 use App\Http\Controllers\ChangePasswordController;
-use App\Http\Controllers\ObatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +30,7 @@ use App\Http\Controllers\ObatController;
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/', [HomeController::class, 'home']);
+	Route::get('/', [HomeController::class, 'home']);
 	Route::get('dashboard', function () {
 		return view('dashboard');
 	})->name('dashboard');
@@ -53,23 +55,23 @@ Route::group(['middleware' => 'auth'], function () {
 		return view('tables');
 	})->name('tables');
 
-    Route::get('virtual-reality', function () {
+	Route::get('virtual-reality', function () {
 		return view('virtual-reality');
 	})->name('virtual-reality');
 
 
-    Route::get('static-sign-in', function () {
+	Route::get('static-sign-in', function () {
 		return view('static-sign-in');
 	})->name('sign-in');
 
-    Route::get('static-sign-up', function () {
+	Route::get('static-sign-up', function () {
 		return view('static-sign-up');
 	})->name('sign-up');
 
-    Route::get('/logout', [SessionsController::class, 'destroy']);
+	Route::get('/logout', [SessionsController::class, 'destroy']);
 	Route::get('/user-profile', [InfoUserController::class, 'create']);
 	Route::post('/user-profile', [InfoUserController::class, 'store']);
-    Route::get('/login', function () {
+	Route::get('/login', function () {
 		return view('dashboard');
 	})->name('sign-up');
 
@@ -82,41 +84,46 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('{id}', [PasienController::class, 'show'])->name('pasiens.show');
 		Route::delete('{id}', [PasienController::class, 'destroy'])->name('pasiens.destroy');
 	});
-	Route::prefix('info-dokter')->group(function(){
+	Route::prefix('info-dokter')->group(function () {
 		Route::get('/', [DokterController::class, 'index'])->name('dokters.index');
 		Route::get('/create', [DokterController::class, 'create'])->name('dokters.create');
-		Route::post('/store', [DokterController::class, 'store'])->name('dokters.store'); 
+		Route::post('/store', [DokterController::class, 'store'])->name('dokters.store');
 		Route::get('{dokter}/edit', [DokterController::class, 'edit'])->name('dokters.edit');
 		Route::put('{id}', [DokterController::class, 'update'])->name('dokters.update');
 		Route::get('{id}', [DokterController::class, 'show'])->name('dokters.show');
-		Route::delete('{id}', [DokterController::class, 'destroy'])->name('dokters.destroy'); 
+		Route::delete('{id}', [DokterController::class, 'destroy'])->name('dokters.destroy');
 	});
-	
-	// Route::get('/rawat-jalan', function () {
-    //     return view('rawat-jalan.index');
-    // })->name('rawat-jalan.index');
 
-	// Route::get('/rawat-jalan', PendaftaranWizard::class)->name('rawat-jalan.index');
-
-
+	Route::prefix('rawat-jalan')->group(function () {
+		Route::get('/', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
+		Route::get('/cari-pasien', [RawatJalanController::class, 'cariPasien'])->name('rawat-jalan.cari-pasien');
+		Route::post('/daftar-pasien', [RawatJalanController::class, 'daftarPasien'])->name('rawat-jalan.daftar-pasien');
+		Route::get('/pilih-dokter', [RawatJalanController::class, 'pilihDokter'])->name('rawat-jalan.pilih-dokter');
+		Route::post('/simpan-dokter', [RawatJalanController::class, 'simpanDokter'])->name('rawat-jalan.simpan-dokter');
+		Route::get('/konfirmasi', [RawatJalanController::class, 'konfirmasi'])->name('rawat-jalan.konfirmasi');
+		Route::post('/simpan-pemeriksaan', [RawatJalanController::class, 'simpanPemeriksaan'])->name('rawat-jalan.simpan-pemeriksaan');
+		Route::get('/invoice', [RawatJalanController::class, 'invoice'])->name('rawat-jalan.invoice');
+		Route::post('/proses-pembayaran', [RawatJalanController::class, 'prosesPembayaran'])->name('rawat-jalan.proses-pembayaran');
+		Route::get('/histori', [RawatJalanController::class, 'histori'])->name('rawat-jalan.histori');
+		Route::post('/lanjutkan-pemeriksaan', [RawatJalanController::class, 'lanjutkanPemeriksaan'])->name('rawat-jalan.lanjutkan-pemeriksaan');
+	});
 });
 
 
 
 Route::group(['middleware' => 'guest'], function () {
-    Route::get('/register', [RegisterController::class, 'create']);
-    Route::post('/register', [RegisterController::class, 'store']);
-    Route::get('/login', [SessionsController::class, 'create']);
-    Route::post('/session', [SessionsController::class, 'store']);
+	Route::get('/register', [RegisterController::class, 'create']);
+	Route::post('/register', [RegisterController::class, 'store']);
+	Route::get('/login', [SessionsController::class, 'create']);
+	Route::post('/session', [SessionsController::class, 'store']);
 	Route::get('/login/forgot-password', [ResetController::class, 'create']);
 	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
 	Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
 	Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
-
 });
 
 Route::get('/login', function () {
-    return view('session/login-session');
+	return view('session/login-session');
 })->name('login');
 
 
