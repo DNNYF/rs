@@ -27,24 +27,12 @@
                         <td class="w-70">{{ $dokter->sip }}</td>
                     </tr>
                     <tr>
-                        <th class="w-30">Gelar Depan</th>
-                        <td class="w-70">{{ $dokter->gelar_depan }}</td>
-                    </tr>
-                    <tr>
-                        <th class="w-30">Gelar Belakang</th>
-                        <td class="w-70">{{ $dokter->gelar_belakang }}</td>
-                    </tr>
-                    <tr>
                         <th class="w-30">Jenis Kelamin</th>
                         <td class="w-70">{{ $dokter->jenis_kelamin }}</td>
                     </tr>
                     <tr>
                         <th class="w-30">Spesialis</th>
                         <td class="w-70">{{ $dokter->spesialis }}</td>
-                    </tr>
-                    <tr>
-                        <th class="w-30">Alamat</th>
-                        <td class="w-70">{{ $dokter->alamat }}</td>
                     </tr>
                     <tr>
                         <th class="w-30">Telepon</th>

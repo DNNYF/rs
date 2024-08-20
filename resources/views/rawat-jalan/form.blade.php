@@ -35,7 +35,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="dokter_id" class="form-label">Pilih Dokter</label>
-                            <select name="dokter_id" class="form-select select2" id="dokter_id" data-live-search="true" required>
+                            <select name="dokter_id" class="form-select select2" id="dokter_id" data-live-search="true" required>\
+                                <option value="" selected>Pilih Dokter</option>
                                 @foreach ($dokters as $dokter)
                                     <option value="{{ $dokter->id }}">{{ $dokter->nama_dokter }} - {{ $dokter->spesialis }}</option>
                                 @endforeach

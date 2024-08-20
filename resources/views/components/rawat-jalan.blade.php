@@ -6,22 +6,19 @@
 
     nextSteps.forEach(button => {
         button.addEventListener('click', () => {
-            // Temukan tab aktif saat ini
             let active = document.querySelector('.tab-pane.active');
             let formElements = active.querySelectorAll('input, select, textarea');
 
-            // Validasi semua input di tab aktif
             let valid = true;
             formElements.forEach(element => {
                 if (!element.checkValidity()) {
                     valid = false;
-                    element.classList.add('is-invalid');  // Tambahkan kelas bootstrap untuk memperlihatkan error
+                    element.classList.add('is-invalid');  
                 } else {
-                    element.classList.remove('is-invalid'); // Hapus error jika input valid
+                    element.classList.remove('is-invalid'); 
                 }
             });
 
-            // Jika valid, pindah ke step berikutnya
             if (valid) {
                 let next = active.nextElementSibling;
                 if (next) {

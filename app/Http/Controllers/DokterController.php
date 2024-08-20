@@ -29,34 +29,34 @@ class DokterController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    Log::info('Store method called');
-    Log::info($request->all());
+    {
+        Log::info('Store method called');
+        Log::info($request->all());
 
-    $validatedData = $request->validate([
-        'nama_dokter' => 'required|string',
-        'nip' => 'required|string',
-        'sip' => 'required|string',
-        'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-        'spesialis' => 'required|in:Umum,Spesialis',
-        'nama_spesialis' => 'nullable|required_if:spesialis,Spesialis|string',
-        'biaya_pelayanan' => 'required|integer',
-        'tlp' => 'required|string',
-        'email' => 'required|email',
-    ]);
+        $validatedData = $request->validate([
+            'nama_dokter' => 'required|string',
+            'nip' => 'required|string',
+            'sip' => 'required|string',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'spesialis' => 'required|in:Umum,Spesialis',
+            'nama_spesialis' => 'nullable|required_if:spesialis,Spesialis|string|max:255',
+            'biaya_pelayanan' => 'required|integer',
+            'tlp' => 'required|string',
+            'email' => 'required|email',
+        ]);
 
-    Log::info('Validation passed');
+        Log::info('Validation passed');
 
-    if ($validatedData['spesialis'] === 'Umum') {
-        $validatedData['nama_spesialis'] = null;
+        if ($validatedData['spesialis'] === 'Umum') {
+            $validatedData['nama_spesialis'] = ''; 
+        }
+
+        Log::info('Before creating Dokter');
+        Dokter::create($validatedData);
+        Log::info('After creating Dokter');
+
+        return redirect()->route('dokters.index')->with('success', 'Data dokter berhasil disimpan.');
     }
-
-    Log::info('Before creating Dokter');
-    Dokter::create($validatedData);
-    Log::info('After creating Dokter');
-
-    return redirect()->route('dokters.index')->with('success', 'Data dokter berhasil disimpan.');
-}
 
     /**
      * Display the specified resource.
@@ -90,7 +90,7 @@ class DokterController extends Controller
                 // 'gelar_belakang' => 'required|string|max:50',
                 'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
                 'spesialis' => 'required|string',
-                'nama_spesialis' => 'nullable|required_if:spesialis,Spesialis|string',
+                'nama_spesialis' => 'nullable|required_if:spesialis,Spesialis|string|max:255',
                 'biaya_pelayanan' => 'required|integer',
                 // 'alamat' => 'required|string|max:50',
                 'tlp' => 'required|string|max:15',

@@ -11,10 +11,10 @@ class Dokter extends Model
         'nama_dokter',
         'nip',
         'sip',
+        'jenis_kelamin',
         'spesialis',
         'nama_spesialis',
         'biaya_pelayanan',
-        'alamat',
         'tlp',
         'email',
     ];

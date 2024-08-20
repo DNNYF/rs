@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('nama_dokter');
             $table->decimal('biaya_pelayanan', 15, 2); // Service fee with 2 decimal places
             $table->timestamps();
-
             // Foreign key constraint
             $table  ->foreign('invoice_id')
                     ->references('id')->on('invoices');
