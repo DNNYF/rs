@@ -40,6 +40,7 @@ class DokterController extends Controller
         'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
         'spesialis' => 'required|in:Umum,Spesialis',
         'nama_spesialis' => 'nullable|required_if:spesialis,Spesialis|string',
+        'biaya_pelayanan' => 'required|integer',
         'tlp' => 'required|string',
         'email' => 'required|email',
     ]);
@@ -90,6 +91,7 @@ class DokterController extends Controller
                 'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
                 'spesialis' => 'required|string',
                 'nama_spesialis' => 'nullable|required_if:spesialis,Spesialis|string',
+                'biaya_pelayanan' => 'required|integer',
                 // 'alamat' => 'required|string|max:50',
                 'tlp' => 'required|string|max:15',
                 'email' => 'required|string|max:50',

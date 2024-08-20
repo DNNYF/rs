@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pemeriksaans', function (Blueprint $table) {
+        Schema::create('pemeriksaan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pasien_id')->constrained();
-            $table->foreignId('dokter_id')->constrained();
-            $table->text('keluhan')->nullable();
-            $table->decimal('total_biaya', 10, 2);
-            $table->enum('status', ['proses', 'selesai'])->default('proses');
+            $table->foreignId('antrian_id')->constrained('antrian')->onDelete('cascade');
+            $table->foreignId('dokter_id')->constrained('dokters')->onDelete('cascade');
+            $table->decimal('biaya', 10, 2);
             $table->timestamps();
         });
     }

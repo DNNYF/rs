@@ -1,3 +1,5 @@
+<script>
+
 document.addEventListener('DOMContentLoaded', function() {
     const specializationSelect = document.getElementById('spesialis');
     const specializationForm = document.getElementById('spesialis-form');
@@ -21,3 +23,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+</script>

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,5 +8,11 @@ class Obat extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama_obat', 'quantity'];
+    protected $primaryKey = 'id_obat';
+
+    protected $fillable = [
+        'nama_obat',
+        'stok_obat',
+        'harga_obat',
+    ];
 }

@@ -88,25 +88,20 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/', [DokterController::class, 'index'])->name('dokters.index');
 		Route::get('/create', [DokterController::class, 'create'])->name('dokters.create');
 		Route::post('/store', [DokterController::class, 'store'])->name('dokters.store');
+		Route::post('/store', [DokterController::class, 'store'])->name('dokters.store');
 		Route::get('{dokter}/edit', [DokterController::class, 'edit'])->name('dokters.edit');
 		Route::put('{id}', [DokterController::class, 'update'])->name('dokters.update');
 		Route::get('{id}', [DokterController::class, 'show'])->name('dokters.show');
 		Route::delete('{id}', [DokterController::class, 'destroy'])->name('dokters.destroy');
+		Route::delete('{id}', [DokterController::class, 'destroy'])->name('dokters.destroy');
 	});
 
 	Route::prefix('rawat-jalan')->group(function () {
-		Route::get('/', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
-		Route::get('/cari-pasien', [RawatJalanController::class, 'cariPasien'])->name('rawat-jalan.cari-pasien');
-		Route::post('/daftar-pasien', [RawatJalanController::class, 'daftarPasien'])->name('rawat-jalan.daftar-pasien');
-		Route::get('/pilih-dokter', [RawatJalanController::class, 'pilihDokter'])->name('rawat-jalan.pilih-dokter');
-		Route::post('/simpan-dokter', [RawatJalanController::class, 'simpanDokter'])->name('rawat-jalan.simpan-dokter');
-		Route::get('/konfirmasi', [RawatJalanController::class, 'konfirmasi'])->name('rawat-jalan.konfirmasi');
-		Route::post('/simpan-pemeriksaan', [RawatJalanController::class, 'simpanPemeriksaan'])->name('rawat-jalan.simpan-pemeriksaan');
-		Route::get('/invoice', [RawatJalanController::class, 'invoice'])->name('rawat-jalan.invoice');
-		Route::post('/proses-pembayaran', [RawatJalanController::class, 'prosesPembayaran'])->name('rawat-jalan.proses-pembayaran');
-		Route::get('/histori', [RawatJalanController::class, 'histori'])->name('rawat-jalan.histori');
-		Route::post('/lanjutkan-pemeriksaan', [RawatJalanController::class, 'lanjutkanPemeriksaan'])->name('rawat-jalan.lanjutkan-pemeriksaan');
+		Route::get('/', [RawatJalanController::class, 'showForm'])->name('rawat-jalan.form');
+		Route::post('/submit', [RawatJalanController::class, 'submitForm'])->name('rawat-jalan.submit');
 	});
+	
+	
 });
 
 
@@ -127,7 +122,7 @@ Route::get('/login', function () {
 })->name('login');
 
 
-
+Route::resource('obat', ObatController::class);
 Route::get('/obat', [ObatController::class, 'index'])->name('obat.index');
 Route::get('/obat/create', [ObatController::class, 'create'])->name('obat.create');
 Route::post('/obat', [ObatController::class, 'store'])->name('obat.store');

@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pemeriksaan extends Model
 {
-    use HasFactory;
-
-    protected $fillable = ['pasien_id', 'dokter_id', 'keluhan', 'status', 'total_biaya'];
+    protected $fillable = ['pasien_id', 'dokter_id', 'keluhan', 'total_biaya', 'status'];
 
     public function pasien()
     {
@@ -19,5 +17,10 @@ class Pemeriksaan extends Model
     public function dokter()
     {
         return $this->belongsTo(Dokter::class);
+    }
+
+    public function obats()
+    {
+        return $this->belongsToMany(Obat::class)->withPivot('jumlah');
     }
 }

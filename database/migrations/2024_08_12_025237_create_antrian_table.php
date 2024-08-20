@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembayarans', function (Blueprint $table) {
+        Schema::create('antrian', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pasien_id')->constrained('pasiens')->onDelete('cascade');
+            $table->enum('status', ['antri', 'periksa', 'pembayaran']);
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembayarans');
+        Schema::dropIfExists('antrians');
     }
 };

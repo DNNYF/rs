@@ -17,13 +17,10 @@
                 </div>
             @endif
             @if (session('info'))
-            <div class="alert alert-info">
-                {{ session('info') }}
-            </div>
-        @endif
-
-
-
+                <div class="alert alert-info">
+                    {{ session('info') }}
+                </div>
+            @endif
 
             <!-- Button to go to the Add Obat page -->
             <a href="{{ route('obat.create') }}" class="btn btn-primary mb-4">Tambah Obat Baru</a>
@@ -37,24 +34,28 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
+                                <th>Nama Obat</th>
                                 <th>Quantity</th>
+                                <th>Harga Obat</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($obats as $obat)
                                 <tr>
-                                    <td>{{ $obat->id }}</td>
+                                    <td>{{ $obat->id_obat }}</td>
                                     <td>{{ $obat->nama_obat }}</td>
-                                    <td>{{ $obat->quantity }}</td>
+                                    <td>{{ $obat->stok_obat }}</td>
+                                    <td>Rp {{ number_format($obat->harga_obat, 0, ',', '.') }}</td>
                                     <td>
-                                        <a href="{{ route('obat.edit', $obat->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                        <form action="{{ route('obat.destroy', $obat->id) }}" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                        </form>
+                                        <a href="{{ route('obat.edit', $obat->id_obat) }}" class="btn btn-warning btn-sm">Edit</a>
+
+<form action="{{ route('obat.destroy', $obat->id_obat) }}" method="POST" style="display:inline-block;">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+</form>
+
                                     </td>
                                 </tr>
                             @endforeach

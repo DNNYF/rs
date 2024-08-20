@@ -56,6 +56,10 @@
             </div>
         </div>
         <div class="mb-3">
+            <label for="biaya_pelayanan" class="form-label">Biaya Pelayanan</label>
+            <input type="number" class="form-control" id="biaya_pelayanan" name="biaya_pelayanan" required>
+        </div>
+        <div class="mb-3">
             <label for="tlp" class="form-label">Telepon</label>
             <input type="text" class="form-control" id="tlp" name="tlp" required>
         </div>
@@ -66,6 +70,7 @@
         <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
 </div>
+<x-info-dokter-script />
 @endsection
 
 
