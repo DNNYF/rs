@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('sip');
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
             $table->string('spesialis');
-            $table->string('nama_spesialis');
+            $table->string('nama_spesialis')->nullable();
             // $table->string('alamat');
             $table->bigInteger('biaya_pelayanan');
             $table->string('tlp');

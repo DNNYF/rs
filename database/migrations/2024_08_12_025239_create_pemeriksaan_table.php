@@ -9,12 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('pembayaran', function (Blueprint $table) {
+        Schema::create('pemeriksaan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('periksa_id')->constrained('periksa')->onDelete('cascade');
-            $table->decimal('total', 10, 2);
+            $table->foreignId('antrian_id')->constrained('antrian')->onDelete('cascade');
+            $table->foreignId('dokter_id')->constrained('dokters')->onDelete('cascade');
+            $table->decimal('biaya', 10, 2);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembayarans');
+        Schema::dropIfExists('pemeriksaan');
     }
 };

@@ -28,8 +28,8 @@
             <thead>
                 <tr>
                     <th scope="col">Nama Lengkap</th>
-                    <th scope="col">Alamat</th>
                     <th scope="col">Spesialis</th>
+                    <th scope="col">Nama Spesialis</th>
                     <th scope="col">Jenis Kelamin</th>
                     <th scope="col">Aksi</th>
                 </tr>
@@ -38,8 +38,8 @@
                 @foreach($dokters as $dokter)
                     <tr>
                         <td scope="row">{{ $dokter->nama_dokter }}</td>
-                        <td>{{ $dokter->alamat }}</td>
                         <td>{{ $dokter->spesialis }}</td>
+                        <td>{{ $dokter->nama_spesialis }}</td>
                         <td>{{ $dokter->jenis_kelamin }}</td>
                         <td>
                             <a href="{{ route('dokters.show', $dokter->id) }}" class="btn btn-info">Lihat</a>

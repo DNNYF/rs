@@ -49,7 +49,7 @@
                 <option value="Spesialis">Spesialis</option>
             </select>
         </div>
-        <div id="spesialis-form" style="display: none;">
+        <div id="nama-spesialis-container" style="display: none;">
             <div class="mb-3">
                 <label for="nama_spesialis" class="form-label">Nama Spesialis</label>
                 <input type="text" class="form-control" id="nama_spesialis" name="nama_spesialis">
