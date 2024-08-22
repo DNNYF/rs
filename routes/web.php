@@ -15,6 +15,9 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\RawatJalanController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Models\Dokter;
+use App\Models\Pasien;
+use App\Models\RawatJalan;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,8 +103,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/', [RawatJalanController::class, 'showForm'])->name('rawat-jalan.form');
 		Route::post('/submit', [RawatJalanController::class, 'submitForm'])->name('rawat-jalan.submit');
 	});
-	
-	
+
+
 });
 
 
@@ -129,3 +132,22 @@ Route::post('/obat', [ObatController::class, 'store'])->name('obat.store');
 Route::get('/obat/{id}/edit', [ObatController::class, 'edit'])->name('obat.edit');
 Route::put('/obat/{id}', [ObatController::class, 'update'])->name('obat.update');
 Route::delete('/obat/{id}', [ObatController::class, 'destroy'])->name('obat.destroy');
+
+
+// In routes/web.php
+Route::post('/rawat-jalan/step1', [RawatJalanController::class, 'storeStep1'])->name('rawat-jalan.storeStep1');
+// routes/web.php
+Route::get('/clinic/dokter/{id}/service-fee', [DokterController::class, 'getServiceFee'])->name('clinic.dokter.service-fee');
+// routes/web.php
+Route::get('/clinic/obat/{id}/info', [ObatController::class, 'getInfo'])->name('clinic.obat.info');
+Route::get('/clinic/pasien/{id}/info', [PasienController::class, 'getPasienInfo'])->name('clinic.pasien.info');
+Route::get('/clinic/dokter/{id}/info', [DokterController::class, 'getDokterInfo'])->name('clinic.dokter.info');
+Route::get('/clinic/obat/{id}/info', [ObatController::class, 'getObatInfo'])->name('clinic.obat.info');
+// routes/web.php
+Route::post('/save-data', [RawatJalanController::class, 'saveData'])->name('save-data');
+Route::post('/rawat-jalan/saveStep1', [RawatJalanController::class, 'saveStep1'])->name('rawat-jalan.saveStep1');
+Route::post('/rawat-jalan/saveStep2', [RawatJalanController::class, 'saveStep2'])->name('rawat-jalan.saveStep2');
+Route::post('/rawat-jalan/saveStep1', [RawatJalanController::class, 'saveStep1'])->name('rawat-jalan.saveStep1');
+Route::post('/rawat-jalan/saveStep2', [RawatJalanController::class, 'saveStep2'])->name('rawat-jalan.saveStep2');
+Route::get('/rawat-jalan', [RawatJalanController::class, 'index'])->name('rawat_jalan.form');
+

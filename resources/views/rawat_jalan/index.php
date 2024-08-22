@@ -44,7 +44,7 @@
                         </div>
                         <button type="button" class="btn btn-primary next-step">Next</button>
                     </div>
-                    
+
 
                     <!-- Step 2: Dokter -->
                     <div class="tab-pane fade" id="step2">
@@ -63,23 +63,23 @@
                                 <input type="number" name="jumlah[]" class="form-control mt-2 obat-jumlah" placeholder="Jumlah" required min="1">
                             </div>
                         </div>
-                        
+
                         <button type="button" class="btn btn-secondary mt-2" id="tambah-obat">Tambah Obat</button>
-                    
+
                         <!-- Step 3: Ringkasan Obat -->
                         <div id="ringkasan_obat" class="mt-3">
                             <h5>Ringkasan Obat</h5>
                             <ul id="daftar-obat"></ul>
                             <p id="total-harga">Total: Rp 0</p>
                         </div>
-                    
+
                         <div class="mt-3">
                             <button type="button" class="btn btn-secondary prev-step">Previous</button>
                             <button type="button" class="btn btn-primary next-step">Next</button>
                         </div>
                     </div>
-                    
-                    
+
+
 
                     <!-- Step 3: Invoice -->
                     <div class="tab-pane fade" id="step3">
@@ -143,7 +143,7 @@ $(document).ready(function() {
             theme: 'bootstrap-5'
         });
         newObatItem.find('input').val('');
-        newObatItem.find('.hapus-obat').show(); 
+        newObatItem.find('.hapus-obat').show();
         $('#obat-container').append(newObatItem);
         updateTombolHapus();
     });
@@ -168,7 +168,7 @@ $(document).ready(function() {
     $('.next-step').click(function() {
         let currentTab = $(this).closest('.tab-pane');
         let nextTab = currentTab.next('.tab-pane');
-        
+
         if (nextTab.length > 0) {
             currentTab.removeClass('show active');
             nextTab.addClass('show active');
@@ -180,7 +180,7 @@ $(document).ready(function() {
     $('.prev-step').click(function() {
         let currentTab = $(this).closest('.tab-pane');
         let prevTab = currentTab.prev('.tab-pane');
-        
+
         if (prevTab.length > 0) {
             currentTab.removeClass('show active');
             prevTab.addClass('show active');
@@ -191,7 +191,7 @@ $(document).ready(function() {
 
     $('#multiStepForm').submit(function(e) {
         e.preventDefault();
-        
+
         let isValid = true;
 
         if ($('#pasien_id').val() === '') {
