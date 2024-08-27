@@ -1,17 +1,9 @@
 <!DOCTYPE html>
-@if (\Request::is('rtl'))
-  <html dir="rtl" lang="ar">
-@else
-  <html lang="en">
-@endif
+<html lang="en">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  @if (env('IS_DEMO'))
-      <x-demo-metas></x-demo-metas>
-  @endif
 
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
@@ -35,7 +27,7 @@
 
 <body class="g-sidenav-show bg-gray-100 {{ (\Request::is('rtl') ? 'rtl' : (Request::is('virtual-reality') ? 'virtual-reality' : '')) }} ">
   @auth
-    @yield('auth')
+    @yield('admin')
   @endauth
   @guest
     @yield('guest')

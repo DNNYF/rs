@@ -6,6 +6,7 @@ use App\Livewire\PendaftaranWizard;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ObatController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\DokterController;
@@ -28,52 +29,81 @@ use App\Http\Controllers\ChangePasswordController;
 */
 
 
-Route::group(['middleware' => 'auth'], function () {
+
+// Route::group(['middleware' => 'auth'], function () {
+
+// 	Route::get('/', [HomeController::class, 'home']);
+// 	Route::get('dashboard', function () {
+// 		return view('dashboard');
+// 	})->name('dashboard');
+
+// 	Route::get('billing', function () {
+// 		return view('billing');
+// 	})->name('billing');
+
+// 	Route::get('profile', function () {
+// 		return view('profile');
+// 	})->name('profile');
+
+// 	Route::get('rtl', function () {
+// 		return view('rtl');
+// 	})->name('rtl');
+
+// 	Route::get('user-management', function () {
+// 		return view('laravel-examples/user-management');
+// 	})->name('user-management');
+
+// 	Route::get('tables', function () {
+// 		return view('tables');
+// 	})->name('tables');
+
+// 	Route::get('virtual-reality', function () {
+// 		return view('virtual-reality');
+// 	})->name('virtual-reality');
+
+
+// 	Route::get('static-sign-in', function () {
+// 		return view('static-sign-in');
+// 	})->name('sign-in');
+
+// 	Route::get('static-sign-up', function () {
+// 		return view('static-sign-up');
+// 	})->name('sign-up');
+
+// });
+// Route::get('/logout', [SessionsController::class, 'destroy']);
+// Route::get('/user-profile', [InfoUserController::class, 'create']);
+// Route::post('/user-profile', [InfoUserController::class, 'store']);
+// Route::get('/login', function () {
+// 	return view('dashboard');
+// })->name('sign-up');
+
+
+
+Route::group(['middleware' => 'guest'], function () {
+	Route::get('/register', [RegisterController::class, 'create']);
+	Route::post('/register', [RegisterController::class, 'store']);
+	Route::get('/login', [SessionsController::class, 'create'])->name('login');  // Login disini
+	Route::post('/session', [SessionsController::class, 'store']);
+	Route::get('/login/forgot-password', [ResetController::class, 'create']);
+	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
+	Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
+	Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
+});
+
+// ROLE : ADMIN
+
+Route::group(['middleware' => ['role:admin']], function () {
+	// Route::get('/dashboard', function () {
+    //     return view('dashboard');
+    // })->name('dashboard');
 
 	Route::get('/', [HomeController::class, 'home']);
 	Route::get('dashboard', function () {
 		return view('dashboard');
 	})->name('dashboard');
 
-	Route::get('billing', function () {
-		return view('billing');
-	})->name('billing');
-
-	Route::get('profile', function () {
-		return view('profile');
-	})->name('profile');
-
-	Route::get('rtl', function () {
-		return view('rtl');
-	})->name('rtl');
-
-	Route::get('user-management', function () {
-		return view('laravel-examples/user-management');
-	})->name('user-management');
-
-	Route::get('tables', function () {
-		return view('tables');
-	})->name('tables');
-
-	Route::get('virtual-reality', function () {
-		return view('virtual-reality');
-	})->name('virtual-reality');
-
-
-	Route::get('static-sign-in', function () {
-		return view('static-sign-in');
-	})->name('sign-in');
-
-	Route::get('static-sign-up', function () {
-		return view('static-sign-up');
-	})->name('sign-up');
-
-	Route::get('/logout', [SessionsController::class, 'destroy']);
-	Route::get('/user-profile', [InfoUserController::class, 'create']);
-	Route::post('/user-profile', [InfoUserController::class, 'store']);
-	Route::get('/login', function () {
-		return view('dashboard');
-	})->name('sign-up');
+	Route::get('/', [HomeController::class, 'home']);
 
 	Route::prefix('info-pasien')->group(function () {
 		Route::get('/', [PasienController::class, 'index'])->name('pasiens.index');
@@ -84,10 +114,10 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('{id}', [PasienController::class, 'show'])->name('pasiens.show');
 		Route::delete('{id}', [PasienController::class, 'destroy'])->name('pasiens.destroy');
 	});
+
 	Route::prefix('info-dokter')->group(function () {
 		Route::get('/', [DokterController::class, 'index'])->name('dokters.index');
 		Route::get('/create', [DokterController::class, 'create'])->name('dokters.create');
-		Route::post('/store', [DokterController::class, 'store'])->name('dokters.store');
 		Route::post('/store', [DokterController::class, 'store'])->name('dokters.store');
 		Route::get('{dokter}/edit', [DokterController::class, 'edit'])->name('dokters.edit');
 		Route::put('{id}', [DokterController::class, 'update'])->name('dokters.update');
@@ -95,37 +125,31 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::delete('{id}', [DokterController::class, 'destroy'])->name('dokters.destroy');
 		Route::delete('{id}', [DokterController::class, 'destroy'])->name('dokters.destroy');
 	});
-
+	
 	Route::prefix('rawat-jalan')->group(function () {
-		Route::get('/', [RawatJalanController::class, 'showForm'])->name('rawat-jalan.form');
-		Route::post('/submit', [RawatJalanController::class, 'submitForm'])->name('rawat-jalan.submit');
+		Route::get('/', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
+		Route::post('/store', [RawatJalanController::class, 'store'])->name('rawat-jalan.store');
+		Route::post('/step1', [RawatJalanController::class, 'step1'])->name('rawat-jalan.step1');
+		Route::post('/step2', [RawatJalanController::class, 'step2'])->name('rawat-jalan.step2');
+		Route::post('/step3', [RawatJalanController::class, 'step3'])->name('rawat-jalan.step3');
+	});
+
+	Route::resource('obat', ObatController::class);
+	Route::get('/obat', [ObatController::class, 'index'])->name('obat.index');
+	Route::get('/obat/create', [ObatController::class, 'create'])->name('obat.create');
+	Route::post('/obat', [ObatController::class, 'store'])->name('obat.store');
+	Route::get('/obat/{id}/edit', [ObatController::class, 'edit'])->name('obat.edit');
+	Route::put('/obat/{id}', [ObatController::class, 'update'])->name('obat.update');
+	Route::delete('/obat/{id}', [ObatController::class, 'destroy'])->name('obat.destroy');
+
+
+	// Route::get('/login', function () {
+		// 	return view('dashboard');
+		// })->name('sign-up');
 	});
 	
-	
-});
 
 
-
-Route::group(['middleware' => 'guest'], function () {
-	Route::get('/register', [RegisterController::class, 'create']);
-	Route::post('/register', [RegisterController::class, 'store']);
-	Route::get('/login', [SessionsController::class, 'create']);
-	Route::post('/session', [SessionsController::class, 'store']);
-	Route::get('/login/forgot-password', [ResetController::class, 'create']);
-	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
-	Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
-	Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
-});
-
-Route::get('/login', function () {
-	return view('session/login-session');
-})->name('login');
-
-
-Route::resource('obat', ObatController::class);
-Route::get('/obat', [ObatController::class, 'index'])->name('obat.index');
-Route::get('/obat/create', [ObatController::class, 'create'])->name('obat.create');
-Route::post('/obat', [ObatController::class, 'store'])->name('obat.store');
-Route::get('/obat/{id}/edit', [ObatController::class, 'edit'])->name('obat.edit');
-Route::put('/obat/{id}', [ObatController::class, 'update'])->name('obat.update');
-Route::delete('/obat/{id}', [ObatController::class, 'destroy'])->name('obat.destroy');
+Route::get('/logout', [SessionsController::class, 'destroy']);
+Route::get('/user-profile', [InfoUserController::class, 'create']);
+Route::post('/user-profile', [InfoUserController::class, 'store']);

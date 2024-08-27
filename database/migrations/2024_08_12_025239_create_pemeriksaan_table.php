@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('pemeriksaan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('antrian_id')->constrained('antrian')->onDelete('cascade');
-            $table->foreignId('dokter_id')->constrained('dokters')->onDelete('cascade');
+            $table->foreignId('pasien_id')->constrained('pasiens');
+            $table->foreignId('dokter_id')->constrained('dokters');
+            $table->enum('step',['step1','step2','step3']);
             $table->decimal('biaya', 10, 2);
             $table->timestamps();
         });

@@ -1,5 +1,4 @@
-@extends('layouts.user_type.auth')
-
+@extends('layouts.user_type.admin')
 @section('content')
 
 <h1>Daftar Dokter</h1>

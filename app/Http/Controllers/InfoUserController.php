@@ -23,6 +23,7 @@ class InfoUserController extends Controller
             'name' => ['required', 'max:50'],
             'email' => ['required', 'email', 'max:50', Rule::unique('users')->ignore(Auth::user()->id)],
             'phone'     => ['max:50'],
+            'role' => ['max:10'],
             'location' => ['max:70'],
             'about_me'    => ['max:150'],
         ]);
@@ -41,16 +42,15 @@ class InfoUserController extends Controller
             ]);
         }
         
-        
         User::where('id',Auth::user()->id)
         ->update([
             'name'    => $attributes['name'],
             'email' => $attribute['email'],
             'phone'     => $attributes['phone'],
             'location' => $attributes['location'],
+            'role'     => $attribute['role'],
             'about_me'    => $attributes["about_me"],
         ]);
-
 
         return redirect('/user-profile')->with('success','Profile updated successfully');
     }
