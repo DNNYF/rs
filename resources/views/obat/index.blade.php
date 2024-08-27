@@ -33,7 +33,8 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <!-- Remove or comment out the ID column header -->
+                                <!-- <th>ID</th> -->
                                 <th>Nama Obat</th>
                                 <th>Quantity</th>
                                 <th>Harga Obat</th>
@@ -43,19 +44,19 @@
                         <tbody>
                             @foreach ($obats as $obat)
                                 <tr>
-                                    <td>{{ $obat->id_obat }}</td>
+                                    <!-- Remove or comment out the ID column value -->
+                                    <!-- <td>{{ $obat->id_obat }}</td> -->
                                     <td>{{ $obat->nama_obat }}</td>
                                     <td>{{ $obat->stok_obat }}</td>
                                     <td>Rp {{ number_format($obat->harga_obat, 0, ',', '.') }}</td>
                                     <td>
                                         <a href="{{ route('obat.edit', $obat->id_obat) }}" class="btn btn-warning btn-sm">Edit</a>
 
-<form action="{{ route('obat.destroy', $obat->id_obat) }}" method="POST" style="display:inline-block;">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-</form>
-
+                                        <form action="{{ route('obat.destroy', $obat->id_obat) }}" method="POST" style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

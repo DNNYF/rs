@@ -16,6 +16,9 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\RawatJalanController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Models\Dokter;
+use App\Models\Pasien;
+use App\Models\RawatJalan;
 
 /*
 |--------------------------------------------------------------------------
