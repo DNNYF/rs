@@ -145,6 +145,13 @@ Route::group(['middleware' => ['role:admin']], function () {
 	Route::put('/obat/{id}', [ObatController::class, 'update'])->name('obat.update');
 	Route::delete('/obat/{id}', [ObatController::class, 'destroy'])->name('obat.destroy');
 
+	Route::get('static-sign-in', function () {
+				return view('static-sign-in');
+			})->name('sign-in');
+		
+			Route::get('static-sign-up', function () {
+				return view('static-sign-up');
+			})->name('sign-up');
 
 	// Route::get('/login', function () {
 		// 	return view('dashboard');
