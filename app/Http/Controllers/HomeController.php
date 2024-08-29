@@ -10,4 +10,8 @@ class HomeController extends Controller
     {
         return redirect('dashboard');
     }
+    public function operatorHome()
+    {
+        return view('operator');
+    }
 }

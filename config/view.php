@@ -33,4 +33,10 @@ return [
         realpath(storage_path('framework/views'))
     ),
 
+    'pagination' => [
+    'default' => 'bootstrap',
+    'bootstrap' => 'pagination::bootstrap-4',
+],
+
+
 ];

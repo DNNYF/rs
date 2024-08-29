@@ -13,7 +13,7 @@ class InfoDokterScript extends Component
      */
     public function __construct()
     {
-        //
+        
     }
 
     /**
