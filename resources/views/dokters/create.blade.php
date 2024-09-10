@@ -55,7 +55,7 @@
         </div>
         <div class="mb-3">
             <label for="biaya_pelayanan" class="form-label">Biaya Pelayanan</label>
-            <input type="number" class="form-control" id="biaya_pelayanan" name="biaya_pelayanan" required>
+            <input type="text" class="form-control" id="biaya_pelayanan" name="biaya_pelayanan" value="Rp 0" required>
         </div>
         <div class="mb-3">
             <label for="tlp" class="form-label">Telepon</label>
@@ -69,6 +69,33 @@
     </form>
 </div>
 <x-info-dokter-script />
+
+<script>
+    const biayaPelayananInput = document.getElementById('biaya_pelayanan');
+
+biayaPelayananInput.addEventListener('input', function(e) {
+    let input = e.target.value;
+
+    input = input.replace(/[^,\d]/g, '');
+
+    const formattedInput = new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+    }).format(input);
+
+    e.target.value = formattedInput.replace(/[A-Za-z]{3}/g, 'Rp').trim();
+});
+
+document.querySelector('form').addEventListener('submit', function() {
+    let rawValue = biayaPelayananInput.value;
+
+    rawValue = rawValue.replace(/[^,\d]/g, '');
+
+    biayaPelayananInput.value = rawValue;
+});
+;
+</script>
 @endsection
 
 
