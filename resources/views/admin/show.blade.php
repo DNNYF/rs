@@ -16,35 +16,35 @@
                 <tbody>
                     <tr>
                         <th class="w-30">ID</th>
-                        <td class="w-70">{{ $operators->id }}</td>
+                        <td class="w-70">{{ $admin->id }}</td>
                     </tr>
                     <tr>
                         <th class="w-30">Nama</th>
-                        <td class="w-70">{{ $operators->name }}</td>
+                        <td class="w-70">{{ $admin->name }}</td>
                     </tr>
                     <tr>
                         <th class="w-30">Email</th>
-                        <td class="w-70">{{ $operators->email }}</td>
+                        <td class="w-70">{{ $admin->email }}</td>
                     </tr>
                     <tr>
                         <th class="w-30">Password</th>
-                        <td class="w-70">{{ $operators->password }}</td>
+                        <td class="w-70">{{ $admin->password }}</td>
                     </tr>
                     <tr>
                         <th class="w-30">Telepon</th>
-                        <td class="w-70">{{ $operators->phone }}</td>
+                        <td class="w-70">{{ $admin->phone }}</td>
                     </tr>
                     <tr>
                         <th class="w-30">Lokasi</th>
-                        <td class="w-70">{{ $operators->location }}</td>
+                        <td class="w-70">{{ $admin->location }}</td>
                     </tr>
                     <tr>
                         <th class="w-30">Keterangan</th>
-                        <td class="w-70">{{ $operators->about_me }}</td>
+                        <td class="w-70">{{ $admin->about_me }}</td>
                     </tr>
                     <tr>
                         <th class="w-30">Role</th>
-                        <td class="w-70">{{ $operators->role }}</td>
+                        <td class="w-70">{{ $admin->role }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -52,8 +52,8 @@
             <hr>
 
             <div class="d-flex justify-content-end mt-3">
-                <a href="{{ route('admin.edit', $operators->id) }}" class="btn btn-primary me-2">Edit</a>
-                <form action="{{ route('admin.destroy', $operators->id) }}" method="POST">
+                <a href="{{ route('admin.edit', $admin->id) }}" class="btn btn-primary me-2">Edit</a>
+                <form action="{{ route('admin.destroy', $admin->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>

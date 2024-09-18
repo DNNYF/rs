@@ -4,22 +4,23 @@ use App\Livewire\Wizard;
 use Illuminate\Http\Request;
 use App\Livewire\PendaftaranWizard;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VodController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ResetController;
 use App\Http\Controllers\KamarController;
+use App\Http\Controllers\ResetController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\RawatJalanController;
 use App\Http\Controllers\ChangePasswordController;
-use App\Http\Controllers\FasilitasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -133,6 +134,16 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::delete('{id}', [DokterController::class, 'destroy'])->name('dokters.destroy');
     });
 
+    Route::prefix('vod')->group(function () {
+        Route::get('/', [VodController::class, 'index'])->name('vod.index');
+        Route::get('/create', [VodController::class, 'create'])->name('vod.create');
+        Route::post('/store', [VodController::class, 'store'])->name('vod.store');
+        Route::get('/{vod}/edit', [VodController::class, 'edit'])->name('vod.edit');
+        Route::get('/vod/{vod}', [VodController::class, 'show'])->name('vod.show');
+        Route::put('/{vod}', [VodController::class, 'update'])->name('vod.update');
+        Route::delete('/{vod}', [VodController::class, 'destroy'])->name('vod.destroy');
+    });
+    
     Route::prefix('rawat-jalan')->group(function () {
         Route::get('/', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
         Route::post('/store', [RawatJalanController::class, 'store'])->name('rawat-jalan.store');
