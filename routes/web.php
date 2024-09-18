@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ResetController;
+use App\Http\Controllers\KamarController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\InfoUserController;
@@ -86,7 +87,7 @@ use App\Http\Controllers\FasilitasController;
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);
-    Route::get('/login', [SessionsController::class, 'create'])->name('login'); 
+    Route::get('/login', [SessionsController::class, 'create'])->name('login');
     Route::post('/session', [SessionsController::class, 'store']);
     Route::get('/login/forgot-password', [ResetController::class, 'create']);
     Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
@@ -110,6 +111,16 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::put('{id}', [PasienController::class, 'update'])->name('pasiens.update');
         Route::get('{id}', [PasienController::class, 'show'])->name('pasiens.show');
         Route::delete('{id}', [PasienController::class, 'destroy'])->name('pasiens.destroy');
+    });
+
+
+    Route::prefix('kamar')->group(function () {
+        Route::get('/', [KamarController::class, 'index'])->name('kamar.index');
+        Route::get('/create', [KamarController::class, 'create'])->name('kamar.create');
+        Route::post('/store', [KamarController::class, 'store'])->name('kamar.store');
+        Route::get('{kamar}/edit', [KamarController::class, 'edit'])->name('kamar.edit');
+        Route::put('{kamar}', [KamarController::class, 'update'])->name('kamar.update');
+        Route::delete('{kamar}', [KamarController::class, 'destroy'])->name('kamar.destroy');
     });
 
     Route::prefix('info-dokter')->group(function () {
