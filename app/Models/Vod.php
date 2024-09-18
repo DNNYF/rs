@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Vod extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['title', 'description', 'file_path', 'thumbnail_path'];
 }

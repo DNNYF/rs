@@ -15,15 +15,18 @@ class RawatJalan extends Model
         'step'
     ];
 
-    // Relasi ke model Pasien
     public function pasien()
     {
         return $this->belongsTo(Pasien::class);
     }
 
-    // Relasi ke model Dokter
     public function dokter()
     {
         return $this->belongsTo(Dokter::class);
+    }
+
+    public function obats()
+    {
+        return $this->belongsToMany(Obat::class)->withPivot('jumlah');
     }
 }

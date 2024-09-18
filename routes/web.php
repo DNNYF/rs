@@ -126,8 +126,8 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
         Route::post('/store', [RawatJalanController::class, 'store'])->name('rawat-jalan.store');
         Route::post('/step1', [RawatJalanController::class, 'step1'])->name('rawat-jalan.step1');
-        Route::post('/step2', [RawatJalanController::class, 'step2'])->name('rawat-jalan.step2');
-        Route::post('/step3', [RawatJalanController::class, 'step3'])->name('rawat-jalan.step3');
+        Route::put('/step2', [RawatJalanController::class, 'step2'])->name('rawat-jalan.step2');
+        Route::put('/step3', [RawatJalanController::class, 'step3'])->name('rawat-jalan.step3');
     });
 
     Route::prefix('manajemen-user')->group(function () {
