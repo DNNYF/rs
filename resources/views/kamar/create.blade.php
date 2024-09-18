@@ -16,25 +16,45 @@
     </div>
 
     <div class="mb-3">
-        <label for="penghuni_kamar" class="form-label">Penghuni Kamar</label>
-        <input type="text" class="form-control" id="penghuni_kamar" name="penghuni_kamar" value="{{ isset($kamar) ? $kamar->penghuni_kamar : old('penghuni_kamar') }}">
+        <label for="pasien_id" class="form-label">Penghuni Kamar</label>
+        <select class="form-control" id="pasien_id" name="pasien_id" required>
+            <option value="">Pilih Pasien</option>
+            @foreach($pasiens as $pasien)
+                <option value="{{ $pasien->id }}" {{ (isset($kamar) && $kamar->pasien_id == $pasien->id) || old('pasien_id') == $pasien->id ? 'selected' : '' }}>
+                    {{ $pasien->nama_lengkap }}
+                </option>
+            @endforeach
+        </select>
     </div>
 
     <div class="mb-3">
-        <label for="dokter_jaga" class="form-label">Dokter Jaga</label>
-        <input type="text" class="form-control" id="dokter_jaga" name="dokter_jaga" value="{{ isset($kamar) ? $kamar->dokter_jaga : old('dokter_jaga') }}">
+        <label for="dokter_jaga_id" class="form-label">Dokter Jaga</label>
+        <select class="form-control" id="dokter_jaga_id" name="dokter_jaga_id" required>
+            <option value="">Pilih Dokter Jaga</option>
+            @foreach($dokters as $dokter)
+                <option value="{{ $dokter->id }}" {{ (isset($kamar) && $kamar->dokter_jaga_id == $dokter->id) || old('dokter_jaga_id') == $dokter->id ? 'selected' : '' }}>
+                    {{ $dokter->nama_dokter }}
+                </option>
+            @endforeach
+        </select>
     </div>
 
     <div class="mb-3">
-        <label for="dokter_spesialis" class="form-label">Dokter Spesialis</label>
-        <input type="text" class="form-control" id="dokter_spesialis" name="dokter_spesialis" value="{{ isset($kamar) ? $kamar->dokter_spesialis : old('dokter_spesialis') }}">
+        <label for="dokter_spesialis_id" class="form-label">Dokter Spesialis</label>
+        <select class="form-control" id="dokter_spesialis_id" name="dokter_spesialis_id" required>
+            <option value="">Pilih Dokter Spesialis</option>
+            @foreach($dokters as $dokter)
+                <option value="{{ $dokter->id }}" {{ (isset($kamar) && $kamar->dokter_spesialis_id == $dokter->id) || old('dokter_spesialis_id') == $dokter->id ? 'selected' : '' }}>
+                    {{ $dokter->nama_dokter }} ({{ $dokter->nama_spesialis }})
+                </option>
+            @endforeach
+        </select>
     </div>
 
     <div class="mb-3">
         <label for="perawat" class="form-label">Perawat</label>
-        <input type="text" class="form-control" id="perawat" name="perawat" value="{{ isset($kamar) ? $kamar->perawat : old('perawat') }}">
+        <input type="text" class="form-control" id="perawat" name="perawat" value="{{ isset($kamar) ? $kamar->perawat : old('perawat') }}" required>
     </div>
-
 
     <div class="mb-3">
         <label for="tipe_kamar" class="form-label">Tipe Kamar</label>

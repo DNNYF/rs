@@ -11,12 +11,26 @@ class Kamar extends Model
 
     protected $fillable = [
         'nomor_kamar',
-        'tipe_kamar',
-        'penghuni_kamar',
-        'dokter_jaga',
-        'dokter_spesialis',
+        'pasien_id',
+        'dokter_jaga_id',
+        'dokter_spesialis_id',
         'perawat',
+        'tipe_kamar',
         'status',
     ];
 
+    public function pasien()
+    {
+        return $this->belongsTo(Pasien::class);
+    }
+
+    public function dokterJaga()
+    {
+        return $this->belongsTo(Dokter::class, 'dokter_jaga_id');
+    }
+
+    public function dokterSpesialis()
+    {
+        return $this->belongsTo(Dokter::class, 'dokter_spesialis_id');
+    }
 }

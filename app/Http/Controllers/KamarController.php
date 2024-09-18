@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Kamar;
 use Illuminate\Http\Request;
+use App\Models\Dokter;
+use App\Models\Pasien;
 
 class KamarController extends Controller
 {
@@ -19,47 +21,51 @@ class KamarController extends Controller
 
     public function create()
     {
-        return view('kamar.create');
+        $dokters = Dokter::all();
+        $pasiens = Pasien::all();
+        return view('kamar.create', compact('dokters', 'pasiens'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nomor_kamar' => 'required|string|max:255',
-            'tipe_kamar' => 'required|string|max:255',
-            'penghuni_kamar' => 'nullable|string|max:255',
-            'dokter_jaga' => 'nullable|string|max:255',
-            'dokter_spesialis' => 'nullable|string|max:255',
-            'perawat' => 'nullable|string|max:255',
-            'status' => 'required|string|in:kosong,terisi',
+        $validatedData = $request->validate([
+            'nomor_kamar' => 'required',
+            'pasien_id' => 'required|exists:pasiens,id',
+            'dokter_jaga_id' => 'required|exists:dokters,id',
+            'dokter_spesialis_id' => 'required|exists:dokters,id',
+            'perawat' => 'required',
+            'tipe_kamar' => 'required',
+            'status' => 'required|in:kosong,terisi',
         ]);
 
-        Kamar::create($request->all());
+        Kamar::create($validatedData);
 
-        return redirect()->route('kamar.index')->with('success', 'Kamar berhasil ditambahkan.');
+        return redirect()->route('kamar.index')->with('success', 'Kamar berhasil ditambahkan');
     }
 
     public function edit(Kamar $kamar)
     {
-        return view('kamar.edit', compact('kamar'));
+        $dokters = Dokter::all();
+        $pasiens = Pasien::all();
+        return view('kamar.edit', compact('kamar', 'dokters', 'pasiens'));
     }
 
     public function update(Request $request, Kamar $kamar)
-{
-    $request->validate([
-        'nomor_kamar' => 'required|string|max:255',
-        'tipe_kamar' => 'required|string|max:255',
-        'penghuni_kamar' => 'nullable|string|max:255',
-        'dokter_jaga' => 'nullable|string|max:255',
-        'dokter_spesialis' => 'nullable|string|max:255',
-        'perawat' => 'nullable|string|max:255',
-        'status' => 'required|string|in:kosong,terisi',
-    ]);
+    {
+        $validatedData = $request->validate([
+            'nomor_kamar' => 'required',
+            'pasien_id' => 'required|exists:pasiens,id',
+            'dokter_jaga_id' => 'required|exists:dokters,id',
+            'dokter_spesialis_id' => 'required|exists:dokters,id',
+            'perawat' => 'required',
+            'tipe_kamar' => 'required',
+            'status' => 'required|in:kosong,terisi',
+        ]);
 
-    $kamar->update($request->all());
+        $kamar->update($validatedData);
 
-    return redirect()->route('kamar.index')->with('success', 'Kamar berhasil diperbarui.');
-}
+        return redirect()->route('kamar.index')->with('success', 'Kamar berhasil diperbarui');
+    }
 
     public function destroy(Kamar $kamar)
     {
