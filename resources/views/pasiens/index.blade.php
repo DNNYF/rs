@@ -20,8 +20,8 @@
         <div class="card-body">
             <form action="{{ route('pasiens.index') }}" method="GET">
                 <div class="input-group">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search" value="{{ request('search') }}">
-                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="{{ request('search') }}">
+                    <button class="btn btn-outline-primary my-sm-0" type="submit">Search</button>
                 </div>
             </form>
         </div>
