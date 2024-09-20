@@ -33,7 +33,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="harga" class="form-label">Harga</label>
-                            <input type="number" class="form-control" id="harga" name="harga" required>
+                            <input type="text" class="form-control" id="biaya_pelayanan" name="harga" placeholder="Rp 0" min="0" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Tambahkan</button>
                         <a href="{{ route('obat.index') }}" class="btn btn-secondary">Batal</a>
@@ -43,4 +43,40 @@
         </div>
     </div>
 </div>
+
+<script>
+    const biayaPelayananInput = document.getElementById('biaya_pelayanan');
+
+    biayaPelayananInput.addEventListener('input', function(e) {
+        let input = e.target.value;
+
+        input = input.replace(/[^,\d]/g, '');
+
+        if (input === '') {
+            e.target.value = '';
+            return;
+        }
+
+        const formattedInput = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(input);
+
+        e.target.value = formattedInput.replace(/[A-Za-z]{3}/g, 'Rp').trim();
+    });
+    document.querySelector('form').addEventListener('submit', function(event) {
+        let rawValue = biayaPelayananInput.value;
+
+        rawValue = rawValue.replace(/[^,\d]/g, '');
+
+        if (rawValue === '' || rawValue === '0') {
+            alert('Biaya Pelayanan tidak boleh Rp 0 atau kosong.');
+            event.preventDefault(); 
+            return;
+        }
+        biayaPelayananInput.value = rawValue;
+    });
+</script>
+
 @endsection

@@ -106,3 +106,4 @@ If you encounter any issues, try the following:
 ## License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+

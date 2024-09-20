@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rawat_jalans', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('pasien_id');
-            $table->unsignedBigInteger('dokter_id');
-            $table->enum('step', ['step1', 'step2', 'step3']);
-            $table->decimal('biaya', 10, 2);
+        Schema::create('pasiens', function (Blueprint $table) {
+            $table->id(); 
+            $table->string('nama_lengkap');
+            $table->string('alamat');
+            $table->date('tgl_lahir');
+            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+            $table->integer('tb'); 
             $table->timestamps();
-        
-            $table->foreign('pasien_id')->references('id')->on('pasiens');
-            $table->foreign('dokter_id')->references('id')->on('dokters');
         });
     }
 
