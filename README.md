@@ -1,4 +1,4 @@
-# Project Setup Guide
+# Laravel Project Setup Guide
 
 This guide will walk you through the process of cloning a Laravel project from GitHub and setting it up to run on your local machine.
 
@@ -106,3 +106,4 @@ If you encounter any issues, try the following:
 ## License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
