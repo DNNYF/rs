@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KamarController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\OperatorController;
@@ -114,6 +115,10 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::delete('{id}', [PasienController::class, 'destroy'])->name('pasiens.destroy');
     });
 
+    Route::prefix('pengaturan')->group(function () {
+    Route::get('/', [PengaturanController::class, 'index'])->name('pengaturan.index');
+    Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
+});
 
     Route::prefix('kamar')->group(function () {
         Route::get('/', [KamarController::class, 'index'])->name('kamar.index');
@@ -143,7 +148,7 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::put('/{vod}', [VodController::class, 'update'])->name('vod.update');
         Route::delete('/{vod}', [VodController::class, 'destroy'])->name('vod.destroy');
     });
-    
+
     Route::prefix('rawat-jalan')->group(function () {
         Route::get('/', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
         Route::post('/store', [RawatJalanController::class, 'store'])->name('rawat-jalan.store');
