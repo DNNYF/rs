@@ -29,7 +29,7 @@
     <div class="card">
         <div class="card-body">
             @if($dokters->count() > 0)
-                <table class="table table-striped table-hover">
+            <table class="table align-items-center mb-0">
                     <thead>
                         <tr>
                             <th scope="col">Nama Lengkap</th>

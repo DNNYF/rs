@@ -81,7 +81,7 @@
     <div class="card mt-4">
         <div class="card-body">
             <h5>Daftar Pasien Menunggu</h5>
-            <table class="table table-bordered">
+            <table class="table align-items-center mb-0">
                 <thead>
                     <tr>
                         <th>Nama Pasien</th>

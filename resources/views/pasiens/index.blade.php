@@ -30,7 +30,7 @@
     <div class="card">
         <div class="card-body">
             @if($pasiens->count() > 0)
-                <table class="table table-hover">
+                <table class="table align-items-center mb-0">
                     <thead>
                         <tr>
                             <th>Nama Lengkap</th>

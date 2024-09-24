@@ -35,7 +35,7 @@
             <h4>Obat Tersedia</h4>
         </div>
         <div class="card-body">
-            <table class="table table-bordered">
+            <table class="table align-items-center mb-0">
                 <thead>
                     <tr>
                         <!-- Remove or comment out the ID column header -->

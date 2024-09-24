@@ -21,7 +21,7 @@
                     <h4>Edit Obat</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('obat.update', $obat->id_obat) }}" method="POST">
+                    <<form action="{{ route('obat.update', $obat->obat) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
@@ -29,7 +29,6 @@
                             <input type="text" class="form-control" id="nama_obat" name="nama_obat" value="{{ old('nama_obat', $obat->nama_obat) }}" required>
                         </div>
 
-                        <!-- Paste the stok_obat field here -->
                         <div class="mb-3">
                             <label for="stok_obat" class="form-label">Stok</label>
                             <input type="number" class="form-control" id="stok_obat" name="stok_obat" value="{{ old('stok_obat', $obat->stok_obat ?? '') }}" required>

@@ -43,26 +43,24 @@ class ObatController extends Controller
         return redirect()->route('obat.index')->with('success', 'Obat berhasil ditambahkan.');
     }
 
-    public function edit(Obat $obat)
+    public function edit(Obat $obat) // Model binding
     {
         return view('obat.edit', compact('obat'));
     }
 
-    public function update(Request $request, $id_obat)
+    public function update(Request $request, Obat $obat) // Model binding
     {
-        $obat = Obat::findOrFail($id_obat);
-
         $request->validate([
             'nama_obat' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('obats', 'nama_obat')->ignore($id_obat, 'id_obat'),
+                Rule::unique('obats', 'nama_obat')->ignore($obat->id), // Gunakan $obat->id
             ],
             'stok_obat' => 'required|integer',
             'harga_obat' => 'required|numeric|min:0',
         ], [
-            'nama_obat.unique' => 'Nama obat sudah ada.' // Pesan error kustom
+            'nama_obat.unique' => 'Nama obat sudah ada.'
         ]);
 
         $obat->update([
@@ -73,6 +71,7 @@ class ObatController extends Controller
 
         return redirect()->route('obat.index')->with('success', 'Obat berhasil diupdate.');
     }
+
 
     public function destroy($id_obat)
     {

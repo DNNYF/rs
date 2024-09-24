@@ -59,11 +59,13 @@ class SessionsController extends Controller
         }
     }
     
-    public function destroy()
-    {
+    public function destroy(Request $request)
+{
+    Auth::logout(); 
 
-        Auth::logout();
+    $request->session()->flush(); 
+    $request->session()->regenerateToken();
 
-        return redirect('/login')->with(['success'=>'You\'ve been logged out.']);
-    }
+    return redirect('/login')->with(['success' => 'You\'ve been logged out.']);
+}
 }

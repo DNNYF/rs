@@ -10,13 +10,13 @@ class VodController extends Controller
 {
     public function index()
     {
-        $vods = Vod::all(); // Ambil semua data VOD
-        return view('vod.index', compact('vods')); // Kirim data ke view
+        $vods = Vod::all(); 
+        return view('vod.index', compact('vods')); 
     }
 
     public function create()
     {
-        return view('vod.create'); // Tampilkan form tambah VOD
+        return view('vod.create'); 
     }
 
     public function store(Request $request)
@@ -29,16 +29,15 @@ class VodController extends Controller
             'is_premium' => 'boolean',
         ]);
 
-        // Simpan file video
+        
         $videoPath = $request->file('file_path')->store('vods', 'public');
         $thumbnailPath = null;
 
-        // Simpan thumbnail jika ada
+        
         if ($request->hasFile('thumbnail_path')) {
             $thumbnailPath = $request->file('thumbnail_path')->store('vod_thumbnails', 'public');
         }
 
-        // Buat entri baru di database
         Vod::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -52,12 +51,12 @@ class VodController extends Controller
 
     public function edit(Vod $vod)
     {
-        return view('vod.edit', compact('vod')); // Tampilkan form edit VOD
+        return view('vod.edit', compact('vod')); 
     }
 
     public function show(Vod $vod)
     {
-        // Memastikan bahwa model yang diterima adalah instance Vod
+        
         return view('vod.show', compact('vod'));
     }
 
@@ -72,24 +71,19 @@ class VodController extends Controller
         ]);
 
         if ($request->hasFile('file_path')) {
-            // Hapus file lama
             Storage::disk('public')->delete($vod->file_path);
-            // Simpan file video baru
             $videoPath = $request->file('file_path')->store('vods', 'public');
             $vod->file_path = $videoPath;
         }
 
         if ($request->hasFile('thumbnail_path')) {
-            // Hapus thumbnail lama
             if ($vod->thumbnail_path) {
                 Storage::disk('public')->delete($vod->thumbnail_path);
             }
-            // Simpan thumbnail baru
             $thumbnailPath = $request->file('thumbnail_path')->store('vod_thumbnails', 'public');
             $vod->thumbnail_path = $thumbnailPath;
         }
 
-        // Update entri di database
         $vod->title = $validated['title'];
         $vod->description = $validated['description'];
         $vod->is_premium = $request->has('is_premium');
@@ -100,12 +94,10 @@ class VodController extends Controller
 
     public function destroy(Vod $vod)
     {
-        // Hapus file dan thumbnail dari storage
         Storage::disk('public')->delete($vod->file_path);
         if ($vod->thumbnail_path) {
             Storage::disk('public')->delete($vod->thumbnail_path);
         }
-        // Hapus entri dari database
         $vod->delete();
 
         return redirect()->route('vod.index')->with('success', 'VOD deleted successfully');

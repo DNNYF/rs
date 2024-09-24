@@ -10,12 +10,12 @@
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 d-flex justify-content-end" id="navbar"> 
             <div class="ms-md-3 pe-md-3 d-flex align-items-center">
-            <div class="input-group">
-                @php
-                    $userRole = Auth::user()->role;
-                @endphp
-                <li type="text" class="form-control d-sm-inline d-none ">Hello {{ $userRole }} </li>
-            </div>
+                <div class="input-group">
+                    @php
+                        $userRole = Auth::user()->role;
+                    @endphp
+                    <li type="text" class="form-control ">Hello {{ $userRole }} </li>
+                </div>
             </div>
             <ul class="navbar-nav  justify-content-end">
                 <li class="nav-item d-flex align-items-center">

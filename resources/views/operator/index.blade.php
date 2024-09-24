@@ -3,10 +3,10 @@
 @section('content')
 
 <div class="container mt-4">
-    <h1 class="mb-4">Daftar Operator</h1>
+    <h1 class="mb-4">Registrasi Pasien</h1>
 
     <div class="mb-3">
-        <a href="{{ route('operator.create') }}" class="btn btn-primary">Tambah Operator Baru</a>
+        <a href="{{ route('operator.create') }}" class="btn btn-primary">Tambah Pasien Baru</a>
     </div>
 
     @if(session('success'))
@@ -30,7 +30,7 @@
     <div class="card">
         <div class="card-body">
             @if($operators->count() > 0)
-                <table class="table table-hover">
+            <table class="table align-items-center mb-0">
                     <thead>
                         <tr>
                             <th>No</th>

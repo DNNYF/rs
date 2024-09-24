@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-4">VOD List</h2>
+    <h1 class="mb-4">Vidio On Demand List</h1>
 
     <a href="{{ route('vod.create') }}" class="btn btn-primary mb-3">Add New VOD</a>
 
@@ -16,7 +16,7 @@
     <div class="card">
         <div class="card-body">
             @if($vods->count() > 0)
-                <table class="table table-hover">
+                <table class="table align-items-center mb-0">
                     <thead>
                         <tr>
                             <th>Title</th>

@@ -9,18 +9,18 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Password;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ManajemenUserController;
 use App\Http\Controllers\KamarController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\InfoUserController;
-use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\RawatJalanController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\ManajemenPasienController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,55 +35,7 @@ use App\Http\Controllers\ChangePasswordController;
 
 
 
-// Route::group(['middleware' => 'auth'], function () {
-
-// 	Route::get('/', [HomeController::class, 'home']);
-// 	Route::get('dashboard', function () {
-// 		return view('dashboard');
-// 	})->name('dashboard');
-
-// 	Route::get('billing', function () {
-// 		return view('billing');
-// 	})->name('billing');
-
-// 	Route::get('profile', function () {
-// 		return view('profile');
-// 	})->name('profile');
-
-// 	Route::get('rtl', function () {
-// 		return view('rtl');
-// 	})->name('rtl');
-
-// 	Route::get('user-management', function () {
-// 		return view('laravel-examples/user-management');
-// 	})->name('user-management');
-
-// 	Route::get('tables', function () {
-// 		return view('tables');
-// 	})->name('tables');
-
-// 	Route::get('virtual-reality', function () {
-// 		return view('virtual-reality');
-// 	})->name('virtual-reality');
-
-
-// 	Route::get('static-sign-in', function () {
-// 		return view('static-sign-in');
-// 	})->name('sign-in');
-
-// 	Route::get('static-sign-up', function () {
-// 		return view('static-sign-up');
-// 	})->name('sign-up');
-
-// });
-// Route::get('/logout', [SessionsController::class, 'destroy']);
-// Route::get('/user-profile', [InfoUserController::class, 'create']);
-// Route::post('/user-profile', [InfoUserController::class, 'store']);
-// Route::get('/login', function () {
-// 	return view('dashboard');
-// })->name('sign-up');
-
-
+Route::get('/logout', [SessionsController::class, 'destroy']);
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
@@ -104,17 +56,6 @@ Route::group(['middleware' => ['role:admin']], function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::prefix('info-pasien')->group(function () {
-        Route::get('/', [PasienController::class, 'index'])->name('pasiens.index');
-        Route::get('create', [PasienController::class, 'create'])->name('pasiens.create');
-        Route::post('store', [PasienController::class, 'store'])->name('pasiens.store');
-        Route::get('{pasien}/edit', [PasienController::class, 'edit'])->name('pasiens.edit');
-        Route::put('{id}', [PasienController::class, 'update'])->name('pasiens.update');
-        Route::get('{id}', [PasienController::class, 'show'])->name('pasiens.show');
-        Route::delete('{id}', [PasienController::class, 'destroy'])->name('pasiens.destroy');
-    });
-
-
     Route::prefix('kamar')->group(function () {
         Route::get('/', [KamarController::class, 'index'])->name('kamar.index');
         Route::get('/create', [KamarController::class, 'create'])->name('kamar.create');
@@ -123,6 +64,7 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::put('{kamar}', [KamarController::class, 'update'])->name('kamar.update');
         Route::delete('{kamar}', [KamarController::class, 'destroy'])->name('kamar.destroy');
     });
+    
 
     Route::prefix('info-dokter')->group(function () {
         Route::get('/', [DokterController::class, 'index'])->name('dokters.index');
@@ -153,13 +95,13 @@ Route::group(['middleware' => ['role:admin']], function () {
     });
 
     Route::prefix('manajemen-user')->group(function () {
-        Route::get('/', [AdminController::class, 'index'])->name('admin.index');
-        Route::get('/create', [AdminController::class, 'create'])->name('admin.create');
-        Route::post('/store', [AdminController::class, 'store'])->name('admin.store');
-        Route::delete('{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
-        Route::get('{admin}/edit', [AdminController::class, 'edit'])->name('admin.edit');
-        Route::put('{admin}', [AdminController::class, 'update'])->name('admin.update');
-        Route::get('{id}', [AdminController::class, 'show'])->name('admin.show');
+        Route::get('/', [ManajemenUserController::class, 'index'])->name('admin.index');
+        Route::get('/create', [ManajemenUserController::class, 'create'])->name('admin.create');
+        Route::post('/store', [ManajemenUserController::class, 'store'])->name('admin.store');
+        Route::delete('{id}', [ManajemenUserController::class, 'destroy'])->name('admin.destroy');
+        Route::get('{admin}/edit', [ManajemenUserController::class, 'edit'])->name('admin.edit');
+        Route::put('{admin}', [ManajemenUserController::class, 'update'])->name('admin.update');
+        Route::get('{id}', [ManajemenUserController::class, 'show'])->name('admin.show');
     });
 
     Route::prefix('fasilitas')->group(function(){
@@ -172,22 +114,23 @@ Route::group(['middleware' => ['role:admin']], function () {
     });
 
     Route::prefix('manajemen-pasien')->group(function () {
-        Route::get('/', [OperatorController::class, 'index'])->name('operator.index');
-        Route::get('/create', [OperatorController::class, 'create'])->name('operator.create');
-        Route::post('/store', [OperatorController::class, 'store'])->name('operator.store');
-        Route::delete('{id}', [OperatorController::class, 'destroy'])->name('operator.destroy');
-        Route::get('{operator}/edit', [OperatorController::class, 'edit'])->name('operator.edit');
-        Route::put('{operator}', [OperatorController::class, 'update'])->name('operator.update');
-        Route::get('{id}', [OperatorController::class, 'show'])->name('operator.show');
+        Route::get('/', [ManajemenPasienController::class, 'index'])->name('pasien.index');
+        Route::get('/create', [ManajemenPasienController::class, 'create'])->name('pasien.create');
+        Route::post('/store', [ManajemenPasienController::class, 'store'])->name('pasien.store');
+        Route::delete('{id}', [ManajemenPasienController::class, 'destroy'])->name('pasien.destroy');
+        Route::get('{pasien}/edit', [ManajemenPasienController::class, 'edit'])->name('pasien.edit');
+        Route::put('{pasien}', [ManajemenPasienController::class, 'update'])->name('pasien.update');
+        Route::get('{id}', [ManajemenPasienController::class, 'show'])->name('pasien.show');
     });
 
-    Route::resource('obat', ObatController::class);
-    Route::get('/obat', [ObatController::class, 'index'])->name('obat.index');
-    Route::get('/obat/create', [ObatController::class, 'create'])->name('obat.create');
-    Route::post('/obat', [ObatController::class, 'store'])->name('obat.store');
-    Route::get('/obat/{id}/edit', [ObatController::class, 'edit'])->name('obat.edit');
-    Route::put('/obat/{id}', [ObatController::class, 'update'])->name('obat.update');
-    Route::delete('/obat/{id}', [ObatController::class, 'destroy'])->name('obat.destroy');
+    Route::prefix('obat')->group(function(){
+        Route::get('/', [ObatController::class, 'index'])->name('obat.index');
+        Route::get('/create', [ObatController::class, 'create'])->name('obat.create');
+        Route::post('/', [ObatController::class, 'store'])->name('obat.store');
+        Route::get('/{id}/edit', [ObatController::class, 'edit'])->name('obat.edit');
+        Route::put('/{id}', [ObatController::class, 'update'])->name('obat.update');
+        Route::delete('/{id}', [ObatController::class, 'destroy'])->name('obat.destroy');
+    });
 
     Route::get('static-sign-in', function () {
         return view('static-sign-in');
@@ -200,10 +143,50 @@ Route::group(['middleware' => ['role:admin']], function () {
 
 // ROLE :: OPERATOR
 Route::group(['middleware' => ['role:operator']], function () {
-    Route::get('/', [HomeController::class, 'operatorHome']);
-});
+    Route::get('/', [HomeController::class, 'Home']);
+    Route::get('dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-Route::get('/logout', [SessionsController::class, 'destroy']);
+    Route::prefix('obat')->group(function(){
+        Route::get('/', [ObatController::class, 'index'])->name('obat.index');
+        Route::get('/create', [ObatController::class, 'create'])->name('obat.create');
+        Route::post('/', [ObatController::class, 'store'])->name('obat.store');
+        Route::get('/{id}/edit', [ObatController::class, 'edit'])->name('obat.edit');
+        Route::put('/{id}', [ObatController::class, 'update'])->name('obat.update');
+        Route::delete('/{id}', [ObatController::class, 'destroy'])->name('obat.destroy');
+    });
+
+    Route::prefix('info-pasien')->group(function () {
+        Route::get('/', [PasienController::class, 'index'])->name('pasiens.index');
+        Route::get('create', [PasienController::class, 'create'])->name('pasiens.create');
+        Route::post('store', [PasienController::class, 'store'])->name('pasiens.store');
+        Route::get('{pasien}/edit', [PasienController::class, 'edit'])->name('pasiens.edit');
+        Route::put('{id}', [PasienController::class, 'update'])->name('pasiens.update');
+        Route::get('{id}', [PasienController::class, 'show'])->name('pasiens.show');
+        Route::delete('{id}', [PasienController::class, 'destroy'])->name('pasiens.destroy');
+    });
+    
+    
+    Route::prefix('obat')->group(function () {
+        Route::get('/', [ObatController::class, 'index'])->name('obat.index');
+        Route::get('create', [ObatController::class, 'create'])->name('obat.create');
+        Route::post('/', [ObatController::class, 'store'])->name('obat.store');
+        Route::get('{obat}/edit', [ObatController::class, 'edit'])->name('obat.edit');
+        Route::put('{obat}', [ObatController::class, 'update'])->name('obat.update');
+        Route::delete('{obat}', [ObatController::class, 'destroy'])->name('obat.destroy');
+    });
+    
+    
+
+    Route::prefix('rawat-jalan')->group(function () {
+        Route::get('/', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
+        Route::post('/store', [RawatJalanController::class, 'store'])->name('rawat-jalan.store');
+        Route::post('/step1', [RawatJalanController::class, 'step1'])->name('rawat-jalan.step1');
+        Route::put('/step2', [RawatJalanController::class, 'step2'])->name('rawat-jalan.step2');
+        Route::put('/step3', [RawatJalanController::class, 'step3'])->name('rawat-jalan.step3');
+    });
+});
 
 Route::get('/user-profile', [InfoUserController::class, 'create']);
 Route::post('/user-profile', [InfoUserController::class, 'store']);

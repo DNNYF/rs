@@ -42,7 +42,7 @@
     <div class="card">
         <div class="card-body">
             @if($admins->count() > 0)
-                <table class="table table-striped table-hover">
+                <table class="table align-items-center mb-0">
                     <thead>
                         <tr>
                             <th>No</th>
