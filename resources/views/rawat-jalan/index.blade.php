@@ -1,145 +1,201 @@
-@extends('layouts.user_type.admin') 
+@extends('layouts.user_type.admin')
 
 @section('content')
-<div class="container mt-5">
-    <div class="card">
-        <div class="card-body">
-            <form id="multiStepForm" action="{{ route('rawat-jalan.store') }}" method="POST">
-                @csrf
-                {{-- <input type="hidden" name="id_rawat_jalan" value="{{ $rawatJalan->id ?? '' }}"> --}}
-                <div class="tab-content">
-                    <!-- Step 1: Pendaftaran -->
-                    <div class="tab-pane fade show active" id="step1">
-                        <div class="mb-3">
-                            <label for="pasien_id" class="form-label">Cari Pasien</label>
-                            <select name="pasien_id" class="form-control mt-2 select2" id="pasien_id" required>
-                                <option value="" selected>Pilih Pasien</option>
-                                @foreach ($pasiens as $pasien)
-                                    <option value="{{ $pasien->id }}">{{ $pasien->nama_lengkap }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="dokter_id" class="form-label">Pilih Dokter</label>
-                            <select name="dokter_id" class="form-select select2" id="dokter_id" required>
-                                <option value="" selected>Pilih Dokter</option>
-                                @foreach ($dokters as $dokter)
-                                    <option value="{{ $dokter->id }}">{{ $dokter->nama_dokter }} - {{ $dokter->spesialis }} - {{ $dokter->nama_spesialis }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <button type="button" class="btn btn-primary next-step" data-step="step1">Next</button>
-                    </div>
-        
-                    <!-- Step 2: Pemeriksaan -->
-                    <div class="tab-pane fade" id="step2">
-                        <div id="obat-container">
-                            <div class="mb-3 obat-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label for="obat_id" class="form-label">Pilih Obat</label>
-                                    <button type="button" class="btn btn-danger btn-sm hapus-obat" style="display: none;">Hapus</button>
-                                </div>
-                                <select name="obat_id[]" class="form-select select2 obat-select w-100" id="obat_id" data-live-search="true" required>
-                                    <option value="" disabled selected>Pilih Obatsss</option>
-                                    @foreach ($obats as $obat)
-                                        <option value="{{ $obat->id_obat }}" data-harga="{{ $obat->harga_obat }}" data-stok="{{ $obat->stok_obat }}">{{ $obat->nama_obat }}</option>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <form method="POST" action="{{ route('rawat-jalan.store') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-primary" name="action" value="dumpSession">New Session</button>
+                        <ul class="nav nav-fill nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link {{ $step == 1 ? 'active' : '' }}">Pendaftaran</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ $step == 2 ? 'active' : '' }}">Obat</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ $step == 3 ? 'active' : '' }}">Pembayaran</a>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    <form id="rawatJalanForm" method="POST" action="{{ route('rawat-jalan.store') }}">
+                        @csrf
+                        <input type="hidden" name="step" value="{{ $step }}">
+
+                        @if ($step == 1)
+                            <div class="form-group mb-2">
+                                <label for="pasien_id">{{ __('Pasien') }}</label>
+                                <select name="pasien_id" id="pasien_id" class="form-control" required>
+                                    <option value="">Pilih Pasien</option>
+                                    @foreach ($pasiens as $pasien)
+                                        <option value="{{ $pasien->id }}">{{ $pasien->nama_lengkap }}</option>
                                     @endforeach
                                 </select>
-                                <input type="number" name="jumlah[]" class="form-control mt-2 obat-jumlah" placeholder="Jumlah" required min="1">
                             </div>
-                        </div>                        
-        
-                        <button type="button" class="btn btn-secondary mt-2" id="tambah-obat">Tambah Obat</button>
-        
-                        <!-- Ringkasan Obat -->
-                        <div id="ringkasan_obat" class="mt-3">
-                            <h5>Ringkasan Obat</h5>
-                            <ul id="daftar-obat"></ul>
-                            <p id="total-harga">Total: Rp 0</p>
-                        </div>
-        
-                        <div class="mt-3">
-                            <button type="button" class="btn btn-secondary prev-step" data-step="step2">Previous</button>
-                            <button type="button" class="btn btn-primary next-step" data-step="step2">Next</button>
-                        </div>
-                    </div>
-        
-                    <!-- Step 3: Pembayaran -->
-                    <div class="tab-pane fade" id="step3">
-                        <div class="mb-3">
-                            <label for="invoice_total" class="form-label">Total Biaya</label>
-                            <input type="text" name="invoice_total" class="form-control" id="invoice_total" readonly>
-                        </div>
-                        <button type="button" class="btn btn-secondary prev-step" data-step="step3">Previous</button>
-                        <button type="submit" class="btn btn-success">Submit</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    
-    <div class="card mt-4">
-        <div class="card-body">
-            <h5>Daftar Pasien Menunggu</h5>
-            <table class="table align-items-center mb-0">
-                <thead>
-                    <tr>
-                        <th>Nama Pasien</th>
-                        <th>Dokter</th>
-                        <th>Progres</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($rawatJalan as $entry)
-                        <tr>
-                            <td>{{ $entry->pasien->nama_lengkap }}</td>
-                            <td>{{ $entry->dokter->nama_dokter }}</td>
-                            <td>
-                                @if($entry->step === 'step1')
-                                    Pendaftaran
-                                @elseif($entry->step === 'step2')
-                                    Pemeriksaan
-                                @elseif($entry->step === 'step3')
-                                    Pembayaran
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('rawat-jalan.show', $entry->id) }}" class="btn btn-primary">Lanjutkan Proses</a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
-</div>
-@endsection
 
-@section('search-filter')
+                            <div class="form-group mb-2">
+                                <label for="dokter_id">{{ __('Dokter') }}</label>
+                                <select name="dokter_id" id="dokter_id" class="form-control" required>
+                                    <option value="">Pilih Dokter</option>
+                                    @foreach ($dokters as $dokter)
+                                        <option value="{{ $dokter->id }}">{{ $dokter->nama_dokter }} - {{ $dokter->spesialis }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        @elseif ($step == 2)
+                            <div id="obat-container">
+                                @if(isset($rawat_jalan_data['obat_id']))
+                                    @foreach($rawat_jalan_data['obat_id'] as $index => $obat_id)
+                                        <div class="mb-3 obat-item">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <label for="obat_id" class="form-label">Pilih Obat</label>
+                                                <button type="button" class="btn btn-danger btn-sm hapus-obat" @if($loop->first) style="display: none;" @endif>Hapus</button>
+                                            </div>
+                                            <select name="obat_id[]" class="form-select select2 obat-select w-100" required>
+                                                <option value="" disabled>Pilih Obat</option>
+                                                @foreach ($obats as $obat)
+                                                    <option value="{{ $obat->id_obat }}" 
+                                                        data-harga="{{ $obat->harga_obat }}" 
+                                                        data-stok="{{ $obat->stok_obat }}"
+                                                        {{ $obat->id_obat == $obat_id ? 'selected' : '' }}>
+                                                        {{ $obat->nama_obat }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <input type="number" name="jumlah[]" class="form-control mt-2 obat-jumlah" placeholder="Jumlah" required min="1" value="{{ $rawat_jalan_data['jumlah'][$index] ?? '' }}">
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="mb-3 obat-item">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <label for="obat_id" class="form-label">Pilih Obat</label>
+                                            <button type="button" class="btn btn-danger btn-sm hapus-obat" style="display: none;">Hapus</button>
+                                        </div>
+                                        <select name="obat_id[]" class="form-select select2 obat-select w-100" id="obat_id" data-live-search="true" required>
+                                            <option value="" disabled selected>Pilih Obat</option>
+                                            @foreach ($obats as $obat)
+                                                <option value="{{ $obat->id_obat }}" data-harga="{{ $obat->harga_obat }}" data-stok="{{ $obat->stok_obat }}">{{ $obat->nama_obat }}</option>
+                                            @endforeach
+                                        </select>
+                                        <input type="number" name="jumlah[]" class="form-control mt-2 obat-jumlah" placeholder="Jumlah" required min="1">
+                                    </div>
+                                @endif
+                            </div>
+
+                            <button type="button" class="btn btn-secondary mt-2" id="tambah-obat">Tambah Obat</button>
+
+                            
+                            <div id="ringkasan_obat" class="mt-3">
+                                <h5>Ringkasan Obat</h5>
+                                <ul id="daftar-obat"></ul>
+                                <p id="total-harga">Total: Rp 0</p>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="total_biaya">{{ __('Total Biaya') }}</label>
+                                <input type="number" name="total_biaya" id="total_biaya" class="form-control" value="{{ old('total_biaya', $rawat_jalan_data['total_biaya'] ?? '') }}" required readonly>
+                            </div>
+
+                        @elseif ($step == 3)
+                            <div class="form-group mb-2">
+                                <label for="total_biaya">{{ __('Total Biaya') }}</label>
+                                <input type="number" name="total_biaya" id="total_biaya" class="form-control" value="{{ old('total_biaya', $rawat_jalan_data['total_biaya'] ?? '') }}" required readonly>
+                            </div>
+                        @endif
+
+                        <div class="d-flex justify-content-between">
+                            @if ($step > 1)
+                                <button type="submit" name="action" value="previous" class="btn btn-secondary">{{ __('Sebelumnya') }}</button>
+                            @endif
+                            @if ($step < 3)
+                                <button type="submit" name="action" value="next" class="btn btn-primary">{{ __('Selanjutnya') }}</button>
+                            @endif
+                            @if ($step == 3)
+                                <button type="submit" name="action" value="finish" class="btn btn-success">{{ __('Simpan Rawat Jalan') }}</button>
+                            @endif
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    @php
+                        $pendaftaranData = $rawatJalanSession->where('step', '1');
+                        $pemeriksaanData = $rawatJalanSession->where('step', '2');
+                        $pembayaranData = $rawatJalanSession->where('step', '3');
+                    @endphp
+
+                    @if($rawatJalanSession->count() > 0)
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Pemeriksaan</th>
+                                    <th>Pembayaran</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($rawatJalanSession as $entry)
+                                    <tr>
+                                        <td>
+                                            @if($pemeriksaanData->contains($entry))
+                                            <a href="{{ route('rawat-jalan.index', ['id' => $entry->id]) }}" data-id="{{ $entry->id }}">
+                                                {{ $entry->pasien->nama_lengkap }}
+                                            </a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($pembayaranData->contains($entry))
+                                            <a href="{{ route('rawat-jalan.index', ['id' => $entry->id]) }}" data-id="{{ $entry->id }}">
+                                                {{ $entry->pasien->nama_lengkap }}
+                                            </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <p class="text-muted">Tidak ada data yang ditemukan.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-   $(document).ready(function() {
+        document.addEventListener('DOMContentLoaded', function () {
+        const rows = document.querySelectorAll('.clickable-row');
+
+        rows.forEach(row => {
+            row.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                fetch(`/rawat-jalan/${id}`) 
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+
+    $(document).ready(function() {
+
     $('.select2').select2();
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-    // Handle Next and Previous buttons
-    $('.next-step').click(function() {
-        let step = $(this).data('step');
-        submitStep(step);
-    });
-
-    $('.prev-step').click(function() {
-        let step = $(this).data('step');
-        showStep(step);
-    });
-
+    
     $('#tambah-obat').click(function() {
         let newObatItem = `
             <div class="mb-3 obat-item">
@@ -147,7 +203,7 @@
                     <label for="obat_id" class="form-label">Pilih Obat</label>
                     <button type="button" class="btn btn-danger btn-sm hapus-obat">Hapus</button>
                 </div>
-                <select name="obat_id[]" class="form-select select2 obat-select" required>
+                <select name="obat_id[]" class="form-select select2 obat-select w-100" required>
                     <option value="" disabled selected>Pilih Obat</option>
                     @foreach ($obats as $obat)
                         <option value="{{ $obat->id_obat }}" data-harga="{{ $obat->harga_obat }}" data-stok="{{ $obat->stok_obat }}">{{ $obat->nama_obat }}</option>
@@ -157,114 +213,47 @@
             </div>
         `;
         $('#obat-container').append(newObatItem);
-        $('.select2').select2();
+        $('.select2').select2(); 
     });
 
     $('#obat-container').on('click', '.hapus-obat', function() {
         $(this).closest('.obat-item').remove();
+        updateRingkasanObat();
     });
 
-    
     $('#obat-container').on('change', '.obat-jumlah, .obat-select', function() {
         updateRingkasanObat();
     });
 
     function updateRingkasanObat() {
-        let total = 0;
-        $('#daftar-obat').empty();
-        $('.obat-item').each(function() {
-            let obat = $(this).find('.obat-select option:selected').text();
-            let harga = $(this).find('.obat-select option:selected').data('harga');
-            let jumlah = $(this).find('.obat-jumlah').val();
-            let subtotal = harga * jumlah;
-            total += subtotal;
-            $('#daftar-obat').append(`<li>${obat} - ${jumlah} x Rp ${harga} = Rp ${subtotal}</li>`);
-        });
-        $('#total-harga').text(`Total: Rp ${total}`);
-        $('#invoice_total').val(total);
-    }
+    let total = 0;
+    $('#daftar-obat').empty();
+    $('.obat-item').each(function() {
+        let obat = $(this).find('.obat-select option:selected').text();
+        let harga = parseFloat($(this).find('.obat-select option:selected').data('harga')) || 0;
+        let jumlah = parseInt($(this).find('.obat-jumlah').val()) || 0;
+        let subtotal = harga * jumlah;
+        total += subtotal;
+        $('#daftar-obat').append(`<li>${obat} - ${jumlah} x Rp ${harga.toFixed(2)} = Rp ${subtotal.toFixed(2)}</li>`);
+    });
+    $('#total-harga').text(`Total: Rp ${total.toFixed(2)}`);
+    $('#total_biaya').val(total);
+}
 
-    function submitStep(step) {
-        let url = '';
-        let method = '';
-        
-        if (step === 'step1') {
-            url = '{{ route('rawat-jalan.step1') }}';
-            method = 'POST';
-        } else if (step === 'step2') {
-            url = '{{ route('rawat-jalan.step2') }}';
-            method = 'PUT';
-        } else if (step === 'step3') {
-            url = '{{ route('rawat-jalan.step3') }}';
-            method = 'PUT';
-        }
-
-        let formData = new FormData($('#multiStepForm')[0]);
-        
-        formData.append('current_step', step);
-
-        if (step === 'step2' || step === 'step3') {
-            let rawatJalanId = localStorage.getItem('id_rawat_jalan');
-            if (rawatJalanId) {
-                formData.append('id_rawat_jalan', rawatJalanId);
-            }
-        }
-
-        for (var pair of formData.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
-
-        $.ajax({
-            type: method,
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                console.log('Success Response:', response);
-                if (response.success) {
-                    if (step === 'step1') {
-                        if (response.id_rawat_jalan) {
-                            localStorage.setItem('id_rawat_jalan', response.id_rawat_jalan);
-                        }
-                        showStep('step2');
-                    } else if (step === 'step2') {
-                        showStep('step3');
-                    } else if (step === 'step3') {
-                        $('#multiStepForm')[0].reset();
-                        localStorage.removeItem('id_rawat_jalan');
-                        alert('Form submitted successfully!');
-                    }
-                } else {
-                    alert('Terjadi kesalahan: ' + (response.message || 'Unknown error'));
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error Response:', xhr.responseText);
-                let errorMessage = 'Terjadi kesalahan: ';
-                if (xhr.responseJSON && xhr.responseJSON.errors) {
-                    for (let field in xhr.responseJSON.errors) {
-                        errorMessage += xhr.responseJSON.errors[field].join(', ') + '\n';
-                    }
-                } else {
-                    errorMessage += error;
-                }
-                alert(errorMessage);
-            }
-        });
-    }
-    function showStep(step) {
-        $('.tab-pane').removeClass('show active');
-        let stepElement = $(`#${step}`);
-        if (stepElement.length) {
-            stepElement.addClass('show active');
+    function toggleFirstHapusButton() {
+        let obatItems = $('.obat-item');
+        if (obatItems.length > 1) {
+            obatItems.first().find('.hapus-obat').show();
         } else {
-            console.error(`Step element #${step} not found`);
+            obatItems.first().find('.hapus-obat').hide();
         }
     }
+
+    $('#tambah-obat').click(toggleFirstHapusButton);
+    $('#obat-container').on('click', '.hapus-obat', toggleFirstHapusButton);
+
+    toggleFirstHapusButton();
 });
 </script>
 
-
 @endsection
-<x-rawat-jalan />

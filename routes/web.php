@@ -64,7 +64,7 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::put('{kamar}', [KamarController::class, 'update'])->name('kamar.update');
         Route::delete('{kamar}', [KamarController::class, 'destroy'])->name('kamar.destroy');
     });
-    
+
 
     Route::prefix('info-dokter')->group(function () {
         Route::get('/', [DokterController::class, 'index'])->name('dokters.index');
@@ -85,14 +85,11 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::put('/{vod}', [VodController::class, 'update'])->name('vod.update');
         Route::delete('/{vod}', [VodController::class, 'destroy'])->name('vod.destroy');
     });
-    
-    Route::prefix('rawat-jalan')->group(function () {
-        Route::get('/', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
-        Route::post('/store', [RawatJalanController::class, 'store'])->name('rawat-jalan.store');
-        Route::post('/step1', [RawatJalanController::class, 'step1'])->name('rawat-jalan.step1');
-        Route::put('/step2', [RawatJalanController::class, 'step2'])->name('rawat-jalan.step2');
-        Route::put('/step3', [RawatJalanController::class, 'step3'])->name('rawat-jalan.step3');
-    });
+
+    Route::get('/rawat-jalan{id?}', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
+    Route::post('/rawat-jalan', [RawatJalanController::class, 'store'])->name('rawat-jalan.store');
+    // Route::get('/rawat-jalan/{id}', [RawatJalanController::class, 'index']);
+
 
     Route::prefix('manajemen-user')->group(function () {
         Route::get('/', [ManajemenUserController::class, 'index'])->name('admin.index');
@@ -104,7 +101,7 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::get('{id}', [ManajemenUserController::class, 'show'])->name('admin.show');
     });
 
-    Route::prefix('fasilitas')->group(function(){
+    Route::prefix('fasilitas')->group(function () {
         Route::get('/', [FasilitasController::class, 'index'])->name('operator.fasilitas.index');
         Route::get('/create', [FasilitasController::class, 'create'])->name('operator.fasilitas.create');
         Route::post('/store', [FasilitasController::class, 'store'])->name('operator.fasilitas.store');
@@ -123,7 +120,7 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::get('{id}', [ManajemenPasienController::class, 'show'])->name('pasien.show');
     });
 
-    Route::prefix('obat')->group(function(){
+    Route::prefix('obat')->group(function () {
         Route::get('/', [ObatController::class, 'index'])->name('obat.index');
         Route::get('/create', [ObatController::class, 'create'])->name('obat.create');
         Route::post('/', [ObatController::class, 'store'])->name('obat.store');
@@ -148,7 +145,7 @@ Route::group(['middleware' => ['role:operator']], function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::prefix('obat')->group(function(){
+    Route::prefix('obat')->group(function () {
         Route::get('/', [ObatController::class, 'index'])->name('obat.index');
         Route::get('/create', [ObatController::class, 'create'])->name('obat.create');
         Route::post('/', [ObatController::class, 'store'])->name('obat.store');
@@ -166,8 +163,8 @@ Route::group(['middleware' => ['role:operator']], function () {
         Route::get('{id}', [PasienController::class, 'show'])->name('pasiens.show');
         Route::delete('{id}', [PasienController::class, 'destroy'])->name('pasiens.destroy');
     });
-    
-    
+
+
     Route::prefix('obat')->group(function () {
         Route::get('/', [ObatController::class, 'index'])->name('obat.index');
         Route::get('create', [ObatController::class, 'create'])->name('obat.create');
@@ -176,8 +173,8 @@ Route::group(['middleware' => ['role:operator']], function () {
         Route::put('{obat}', [ObatController::class, 'update'])->name('obat.update');
         Route::delete('{obat}', [ObatController::class, 'destroy'])->name('obat.destroy');
     });
-    
-    
+
+
 
     Route::prefix('rawat-jalan')->group(function () {
         Route::get('/', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');

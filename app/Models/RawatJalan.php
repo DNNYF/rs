@@ -10,7 +10,6 @@ class RawatJalan extends Model
     protected $fillable = [
         'pasien_id',
         'dokter_id',
-        'obat_list',
         'total_biaya',
         'step'
     ];
@@ -27,6 +26,7 @@ class RawatJalan extends Model
 
     public function obats()
     {
-        return $this->belongsToMany(Obat::class)->withPivot('jumlah');
+        return $this->belongsToMany(Obat::class, 'rawat_jalan_obats', 'rawat_jalan_id', 'obat_id')
+                    ->withPivot('jumlah');
     }
 }

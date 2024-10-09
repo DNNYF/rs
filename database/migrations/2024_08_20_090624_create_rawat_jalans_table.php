@@ -1,26 +1,33 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateRawatJalansTable extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
-        Schema::create('rawat_jalan', function (Blueprint $table) {
-            $table->id('id_rawat_jalan');
-            $table->unsignedBigInteger('pasien_id');
-            $table->unsignedBigInteger('dokter_id');
-            $table->json('obat_data'); 
-            $table->decimal('total_harga', 10, 2);
+        Schema::create('rawat_jalans', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('pasien_id')->constrained('pasiens')->onDelete('cascade');
+            $table->foreignId('dokter_id')->constrained('dokters')->onDelete('cascade');
+            $table->decimal('total_biaya', 10, 2);
             $table->timestamps();
-            $table->foreign('pasien_id')->references('id')->on('pasiens')->onDelete('cascade');
-            $table->foreign('dokter_id')->references('id')->on('dokters')->onDelete('cascade');
         });
     }
-
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
-        Schema::dropIfExists('rawat_jalan');
+        Schema::dropIfExists('rawat_jalans');
     }
-};
+}

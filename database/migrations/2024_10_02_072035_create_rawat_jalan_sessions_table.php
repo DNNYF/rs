@@ -9,13 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('rawat_jalan_obat', function (Blueprint $table) {
+        Schema::create('rawat_jalan_sessions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_rawat_jalan')->constrained();
-            $table->foreignId('id_obat')->constrained();
-            $table->integer('jumlah');
+            $table->foreignId('pasien_id')->constrained();
+            $table->foreignId('dokter_id')->constrained();
+            $table->text('obat_list')->nullable();
+            $table->enum('step',['1','2','3'])->default('1');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rawat_jalan_obat');
+        Schema::dropIfExists('rawat_jalan_sessions');
     }
 };
