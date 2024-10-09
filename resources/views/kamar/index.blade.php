@@ -44,16 +44,15 @@
                     <td>{{ $kamar->nomor_kamar }}</td>
                     <td>{{ $kamar->tipe_kamar }}</td>
                     <td>{{ $kamar->pasien ? $kamar->pasien->nama_lengkap : 'Tidak ada' }}</td>
-<td>{{ $kamar->dokterJaga ? $kamar->dokterJaga->nama_dokter : 'Tidak ada' }}</td>
-<td>
-    @if($kamar->dokterSpesialis)
-        {{ $kamar->dokterSpesialis->nama_dokter }} ({{ $kamar->dokterSpesialis->nama_spesialis }})
-    @else
-        Tidak ada
-    @endif
-</td>
-
-                    <td>{{ $kamar->perawat }}</td>
+                    <td>{{ $kamar->dokterJaga ? $kamar->dokterJaga->name : 'Tidak ada' }}</td>
+                    <td>
+                        @if($kamar->dokterSpesialis)
+                            {{ $kamar->dokterSpesialis->nama_dokter }} ({{ $kamar->dokterSpesialis->nama_spesialis }})
+                        @else
+                            Tidak ada
+                        @endif
+                    </td>
+                    <td>{{ $kamar->perawat ? $kamar->perawat->name : 'Tidak ada' }}</td>
                     <td>
                         @if($kamar->status == 'kosong')
                             <span class="badge bg-success">Kosong</span>
@@ -72,7 +71,6 @@
                 </tr>
                 @endforeach
             </tbody>
-
         </table>
     </div>
 </div>

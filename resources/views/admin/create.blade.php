@@ -39,6 +39,7 @@
                         <option value="operator">Operator</option>
                         <option value="pasien">Pasien</option>
                         <option value="perawat">Perawat</option>
+                        <option value="dokter_jaga">Dokter Jaga</option>
                     </select>
                 </div>
                 <div class="mb-3">

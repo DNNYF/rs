@@ -24,6 +24,7 @@
                 <option value="operator" {{ old('role', $admin->role) == 'operator' ? 'selected' : '' }}>Operator</option>
                 <option value="pasien" {{ old('role', $admin->role) == 'pasien' ? 'selected' : '' }}>Pasien</option>
                 <option value="perawat" {{ old('role', $admin->role) == 'perawat' ? 'selected' : '' }}>Perawat</option>
+                <option value="dokter_jaga" {{ old('role', $admin->role) == 'dokter_jaga' ? 'selected' : '' }}>Dokter Jaga</option>
             </select>
         </div>
         <div class="mb-3">

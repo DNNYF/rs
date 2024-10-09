@@ -44,7 +44,8 @@ class AdminController extends Controller
 
     public function create()
     {
-        return view('admin.create');
+        $roles = ['admin', 'operator', 'pasien', 'perawat', 'dokter_jaga'];
+        return view('admin.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -53,7 +54,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:admin,operator,pasien,perawat'
+            'role' => 'required|in:admin,operator,pasien,perawat,dokter_jaga'
         ]);
 
         $user = User::create([
@@ -69,7 +70,8 @@ class AdminController extends Controller
     public function edit(string $id)
     {
         $admin = User::findOrFail($id);
-        return view('admin.edit', compact('admin'));
+        $roles = ['admin', 'operator', 'pasien', 'perawat', 'dokter_jaga'];
+        return view('admin.edit', compact('admin', 'roles'));
     }
 
     public function update(Request $request, string $id)
@@ -77,10 +79,10 @@ class AdminController extends Controller
         $admin = User::findOrFail($id);
 
         $updateData = $request->validate([
-            'name' => '|string|max:255',
-            'email' => '|email|unique:users,email,' . $admin->id,
-            'password' => '|string|min:8|confirmed',
-            'role' => '|in:admin,operator,pasien,perawat'
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|unique:users,email,' . $admin->id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'role' => 'nullable|in:admin,operator,pasien,perawat,dokter_jaga'
         ]);
 
         if ($request->filled('password')) {

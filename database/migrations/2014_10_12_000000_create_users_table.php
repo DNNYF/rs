@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->bigInteger('phone')->nullable();
             $table->string('location')->nullable();
             $table->string('about_me')->nullable();
-            $table->enum('role',['admin','operator','pasien','perawat'])->default('pasien');
+            $table->enum('role', ['admin', 'operator', 'pasien', 'perawat', 'dokter_jaga'])->default('pasien');
             $table->rememberToken();
             $table->timestamps();
         });

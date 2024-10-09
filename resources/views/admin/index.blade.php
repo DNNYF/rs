@@ -26,7 +26,9 @@
                             <option value="operator" {{ request('role') == 'operator' ? 'selected' : '' }}>Operator</option>
                             <option value="pasien" {{ request('role') == 'pasien' ? 'selected' : '' }}>Pasien</option>
                             <option value="perawat" {{ request('role') == 'perawat' ? 'selected' : '' }}>Perawat</option>
+                            <option value="dokter_jaga" {{ request('role') == 'dokter_jaga' ? 'selected' : '' }}>Dokter Jaga</option>
                         </select>
+                    </div>
                     </div>
                     <div class="col-md-9">
                         <div class="input-group">

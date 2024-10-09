@@ -1,3 +1,5 @@
+
+admin>show.blade.php
 @extends('layouts.user_type.admin')
 
 @section('content')

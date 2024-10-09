@@ -14,7 +14,7 @@ class Kamar extends Model
         'pasien_id',
         'dokter_jaga_id',
         'dokter_spesialis_id',
-        'perawat',
+        'perawat_id',
         'tipe_kamar',
         'status',
     ];
@@ -26,11 +26,16 @@ class Kamar extends Model
 
     public function dokterJaga()
     {
-        return $this->belongsTo(Dokter::class, 'dokter_jaga_id');
+        return $this->belongsTo(User::class, 'dokter_jaga_id');
     }
 
     public function dokterSpesialis()
     {
         return $this->belongsTo(Dokter::class, 'dokter_spesialis_id');
+    }
+
+    public function perawat()
+    {
+        return $this->belongsTo(User::class, 'perawat_id');
     }
 }

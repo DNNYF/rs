@@ -4,39 +4,41 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateKamarsTable extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('kamars', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_kamar');
+            $table->string('nomor_kamar')->unique();
             $table->string('tipe_kamar');
-            $table->string('penghuni_kamar')->nullable(); // Add room occupant
-            $table->string('dokter_jaga')->nullable(); // Add on-duty doctor
-            $table->string('dokter_spesialis')->nullable(); // Add specialist doctor
-            $table->string('perawat')->nullable(); // Add nurse
+            $table->unsignedBigInteger('pasien_id')->nullable();
+            $table->unsignedBigInteger('dokter_jaga_id')->nullable();
+            $table->unsignedBigInteger('dokter_spesialis_id')->nullable();
+            $table->unsignedBigInteger('perawat_id')->nullable();
             $table->enum('status', ['kosong', 'terisi'])->default('kosong');
-            $table->unsignedBigInteger('pasien_id')->nullable(); // Foreign key pasien
-            $table->unsignedBigInteger('dokter_jaga_id')->nullable(); // Foreign key dokter jaga
-            $table->unsignedBigInteger('dokter_spesialis_id')->nullable(); // Foreign key dokter spesialis
             $table->timestamps();
 
-            // Menambahkan foreign key
+            // Foreign key constraints
             $table->foreign('pasien_id')->references('id')->on('pasiens')->onDelete('set null');
-            $table->foreign('dokter_jaga_id')->references('id')->on('dokters')->onDelete('set null');
+            $table->foreign('dokter_jaga_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('dokter_spesialis_id')->references('id')->on('dokters')->onDelete('set null');
+            $table->foreign('perawat_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('kamars');
     }
-};
+}
