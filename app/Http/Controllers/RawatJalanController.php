@@ -36,38 +36,40 @@ class RawatJalanController extends Controller
         ],
     ];
 
-    public function index(Request $request )
+    public function index(Request $request)
     {   
-        $data = [
-            'id' => 3,
-            'pasien_id' => 3,
-            'dokter_id' => 1,
-            'obat_list' => '["2"]', // Data ini berasal dari database
-            'step' => 2,
-            'created_at' => '2024-10-09 06:27:13',
-            'updated_at' => '2024-10-09 06:40:57'
-        ];
+        $id = $request->query('id');
+        $rawat_jalan_data = null;
+
+        if ($id) {
+            $session = RawatJalanSession::find($id);
+            if ($session) {
+                $rawat_jalan_data = [
+                    'id' => $session->id,
+                    'pasien_id' => $session->pasien_id,
+                    'dokter_id' => $session->dokter_id,
+                    'obat_list' => $session->obat_list ? json_decode($session->obat_list, true) : [],
+                    'step' => $session->step,
+                ];
+                $request->session()->put('rawat_jalan_data', $rawat_jalan_data);
+                $request->session()->put('rawat_jalan_step', $session->step);
+            }
+        }
+
+        if (!$rawat_jalan_data) {
+            $rawat_jalan_data = $request->session()->get('rawat_jalan_data', []);
+        }
         
-        // Membuat array rawat_jalan_data
-        $rawat_jalan_data = [
-            'id' => $data['id'],
-            'pasien_id' => $data['pasien_id'],
-            'dokter_id' => $data['dokter_id'],
-            'obat_id' => json_decode($data['obat_list'], true), // Mengubah JSON ke array
-            'step' => $data['step'],
-        ];
-        // Ambil data dokter, pasien, dan obat secara terpisah
         $pasiens = Pasien::all();
         $dokters = Dokter::all();
         $obats = Obat::all();
-        $rawatJalanSession = RawatJalanSession::all();
-        if($rawat_jalan_data){
-           $step = $request->session()->get('rawat_jalan_step', $rawat_jalan_data['step'] ?? 1);
-           if (!isset($this->steps[$step])) {
-               return redirect()->route('rawat-jalan.index')->with('error', 'Invalid step');
-           }
-        }
+        $rawatJalanSessions = RawatJalanSession::with('pasien')->get();
 
+        $step = $request->session()->get('rawat_jalan_step', $rawat_jalan_data['step'] ?? 1);
+        
+        if (!isset($this->steps[$step])) {
+            return redirect()->route('rawat-jalan.index')->with('error', 'Invalid step');
+        }
 
         $viewData = [
             'step' => $step,
@@ -75,11 +77,12 @@ class RawatJalanController extends Controller
             'pasiens' => $pasiens,
             'dokters' => $dokters,
             'obats' => $obats,
-            'rawatJalanSession' => $rawatJalanSession,
+            'rawatJalanSessions' => $rawatJalanSessions,
         ];
 
         return view($this->steps[$step]['view'], $viewData);
     }
+
 
     public function store(Request $request)
 {

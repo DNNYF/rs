@@ -34,7 +34,9 @@
                                 <select name="pasien_id" id="pasien_id" class="form-control" required>
                                     <option value="">Pilih Pasien</option>
                                     @foreach ($pasiens as $pasien)
-                                        <option value="{{ $pasien->id }}">{{ $pasien->nama_lengkap }}</option>
+                                        <option value="{{ $pasien->id }}" {{ ($rawat_jalan_data['pasien_id'] ?? '') == $pasien->id ? 'selected' : '' }}>
+                                            {{ $pasien->nama_lengkap }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -44,15 +46,17 @@
                                 <select name="dokter_id" id="dokter_id" class="form-control" required>
                                     <option value="">Pilih Dokter</option>
                                     @foreach ($dokters as $dokter)
-                                        <option value="{{ $dokter->id }}">{{ $dokter->nama_dokter }} - {{ $dokter->spesialis }}</option>
+                                        <option value="{{ $dokter->id }}" {{ ($rawat_jalan_data['dokter_id'] ?? '') == $dokter->id ? 'selected' : '' }}>
+                                            {{ $dokter->nama_dokter }} - {{ $dokter->spesialis }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
 
                         @elseif ($step == 2)
                             <div id="obat-container">
-                                @if(isset($rawat_jalan_data['obat_id']))
-                                    @foreach($rawat_jalan_data['obat_id'] as $index => $obat_id)
+                                @if(isset($rawat_jalan_data['obat_list']))
+                                    @foreach($rawat_jalan_data['obat_list'] as $index => $obat)
                                         <div class="mb-3 obat-item">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <label for="obat_id" class="form-label">Pilih Obat</label>
@@ -60,16 +64,16 @@
                                             </div>
                                             <select name="obat_id[]" class="form-select select2 obat-select w-100" required>
                                                 <option value="" disabled>Pilih Obat</option>
-                                                @foreach ($obats as $obat)
-                                                    <option value="{{ $obat->id_obat }}" 
-                                                        data-harga="{{ $obat->harga_obat }}" 
-                                                        data-stok="{{ $obat->stok_obat }}"
-                                                        {{ $obat->id_obat == $obat_id ? 'selected' : '' }}>
-                                                        {{ $obat->nama_obat }}
+                                                @foreach ($obats as $obat_option)
+                                                    <option value="{{ $obat_option->id_obat }}" 
+                                                        data-harga="{{ $obat_option->harga_obat }}" 
+                                                        data-stok="{{ $obat_option->stok_obat }}"
+                                                        {{ $obat_option->id_obat == $obat['obat_id'] ? 'selected' : '' }}>
+                                                        {{ $obat_option->nama_obat }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <input type="number" name="jumlah[]" class="form-control mt-2 obat-jumlah" placeholder="Jumlah" required min="1" value="{{ $rawat_jalan_data['jumlah'][$index] ?? '' }}">
+                                            <input type="number" name="jumlah[]" class="form-control mt-2 obat-jumlah" placeholder="Jumlah" required min="1" value="{{ $obat['jumlah'] }}">
                                         </div>
                                     @endforeach
                                 @else
@@ -91,7 +95,6 @@
 
                             <button type="button" class="btn btn-secondary mt-2" id="tambah-obat">Tambah Obat</button>
 
-                            
                             <div id="ringkasan_obat" class="mt-3">
                                 <h5>Ringkasan Obat</h5>
                                 <ul id="daftar-obat"></ul>
@@ -129,13 +132,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    @php
-                        $pendaftaranData = $rawatJalanSession->where('step', '1');
-                        $pemeriksaanData = $rawatJalanSession->where('step', '2');
-                        $pembayaranData = $rawatJalanSession->where('step', '3');
-                    @endphp
-
-                    @if($rawatJalanSession->count() > 0)
+                    @if($rawatJalanSessions->count() > 0)
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
@@ -144,17 +141,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($rawatJalanSession as $entry)
+                                @foreach($rawatJalanSessions as $entry)
                                     <tr>
                                         <td>
-                                            @if($pemeriksaanData->contains($entry))
+                                            @if($entry->step == 2)
                                             <a href="{{ route('rawat-jalan.index', ['id' => $entry->id]) }}" data-id="{{ $entry->id }}">
                                                 {{ $entry->pasien->nama_lengkap }}
                                             </a>
                                             @endif
                                         </td>
                                         <td>
-                                            @if($pembayaranData->contains($entry))
+                                            @if($entry->step == 3)
                                             <a href="{{ route('rawat-jalan.index', ['id' => $entry->id]) }}" data-id="{{ $entry->id }}">
                                                 {{ $entry->pasien->nama_lengkap }}
                                             </a>
@@ -174,86 +171,68 @@
 </div>
 
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        const rows = document.querySelectorAll('.clickable-row');
-
-        rows.forEach(row => {
-            row.addEventListener('click', function () {
-                const id = this.getAttribute('data-id');
-                fetch(`/rawat-jalan/${id}`) 
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        
-                    })
-                    .catch(error => console.error('Error:', error));
-            });
-        });
-    });
-
     $(document).ready(function() {
+        $('.select2').select2();
 
-    $('.select2').select2();
-
-    
-    $('#tambah-obat').click(function() {
-        let newObatItem = `
-            <div class="mb-3 obat-item">
-                <div class="d-flex justify-content-between align-items-center">
-                    <label for="obat_id" class="form-label">Pilih Obat</label>
-                    <button type="button" class="btn btn-danger btn-sm hapus-obat">Hapus</button>
+        $('#tambah-obat').click(function() {
+            let newObatItem = `
+                <div class="mb-3 obat-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label for="obat_id" class="form-label">Pilih Obat</label>
+                        <button type="button" class="btn btn-danger btn-sm hapus-obat">Hapus</button>
+                    </div>
+                    <select name="obat_id[]" class="form-select select2 obat-select w-100" required>
+                        <option value="" disabled selected>Pilih Obat</option>
+                        @foreach ($obats as $obat)
+                            <option value="{{ $obat->id_obat }}" data-harga="{{ $obat->harga_obat }}" data-stok="{{ $obat->stok_obat }}">{{ $obat->nama_obat }}</option>
+                        @endforeach
+                    </select>
+                    <input type="number" name="jumlah[]" class="form-control mt-2 obat-jumlah" placeholder="Jumlah" required min="1">
                 </div>
-                <select name="obat_id[]" class="form-select select2 obat-select w-100" required>
-                    <option value="" disabled selected>Pilih Obat</option>
-                    @foreach ($obats as $obat)
-                        <option value="{{ $obat->id_obat }}" data-harga="{{ $obat->harga_obat }}" data-stok="{{ $obat->stok_obat }}">{{ $obat->nama_obat }}</option>
-                    @endforeach
-                </select>
-                <input type="number" name="jumlah[]" class="form-control mt-2 obat-jumlah" placeholder="Jumlah" required min="1">
-            </div>
-        `;
-        $('#obat-container').append(newObatItem);
-        $('.select2').select2(); 
-    });
+            `;
+            $('#obat-container').append(newObatItem);
+            $('.select2').select2(); 
+        });
 
-    $('#obat-container').on('click', '.hapus-obat', function() {
-        $(this).closest('.obat-item').remove();
-        updateRingkasanObat();
-    });
+        $('#obat-container').on('click', '.hapus-obat', function() {
+            $(this).closest('.obat-item').remove();
+            updateRingkasanObat();
+        });
 
-    $('#obat-container').on('change', '.obat-jumlah, .obat-select', function() {
-        updateRingkasanObat();
-    });
+        $('#obat-container').on('change', '.obat-jumlah, .obat-select', function() {
+            updateRingkasanObat();
+        });
 
-    function updateRingkasanObat() {
-    let total = 0;
-    $('#daftar-obat').empty();
-    $('.obat-item').each(function() {
-        let obat = $(this).find('.obat-select option:selected').text();
-        let harga = parseFloat($(this).find('.obat-select option:selected').data('harga')) || 0;
-        let jumlah = parseInt($(this).find('.obat-jumlah').val()) || 0;
-        let subtotal = harga * jumlah;
-        total += subtotal;
-        $('#daftar-obat').append(`<li>${obat} - ${jumlah} x Rp ${harga.toFixed(2)} = Rp ${subtotal.toFixed(2)}</li>`);
-    });
-    $('#total-harga').text(`Total: Rp ${total.toFixed(2)}`);
-    $('#total_biaya').val(total);
-}
-
-    function toggleFirstHapusButton() {
-        let obatItems = $('.obat-item');
-        if (obatItems.length > 1) {
-            obatItems.first().find('.hapus-obat').show();
-        } else {
-            obatItems.first().find('.hapus-obat').hide();
+        function updateRingkasanObat() {
+            let total = 0;
+            $('#daftar-obat').empty();
+            $('.obat-item').each(function() {
+                let obat = $(this).find('.obat-select option:selected').text();
+                let harga = parseFloat($(this).find('.obat-select option:selected').data('harga')) || 0;
+                let jumlah = parseInt($(this).find('.obat-jumlah').val()) || 0;
+                let subtotal = harga * jumlah;
+                total += subtotal;
+                $('#daftar-obat').append(`<li>${obat} - ${jumlah} x Rp ${harga.toFixed(2)} = Rp ${subtotal.toFixed(2)}</li>`);
+            });
+            $('#total-harga').text(`Total: Rp ${total.toFixed(2)}`);
+            $('#total_biaya').val(total);
         }
-    }
 
-    $('#tambah-obat').click(toggleFirstHapusButton);
-    $('#obat-container').on('click', '.hapus-obat', toggleFirstHapusButton);
+        function toggleFirstHapusButton() {
+            let obatItems = $('.obat-item');
+            if (obatItems.length > 1) {
+                obatItems.first().find('.hapus-obat').show();
+            } else {
+                obatItems.first().find('.hapus-obat').hide();
+            }
+        }
 
-    toggleFirstHapusButton();
-});
+        $('#tambah-obat').click(toggleFirstHapusButton);
+        $('#obat-container').on('click', '.hapus-obat', toggleFirstHapusButton);
+
+        toggleFirstHapusButton();
+        updateRingkasanObat();
+    });
 </script>
 
 @endsection

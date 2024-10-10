@@ -86,9 +86,16 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::delete('/{vod}', [VodController::class, 'destroy'])->name('vod.destroy');
     });
 
-    Route::get('/rawat-jalan{id?}', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
-    Route::post('/rawat-jalan', [RawatJalanController::class, 'store'])->name('rawat-jalan.store');
-    // Route::get('/rawat-jalan/{id}', [RawatJalanController::class, 'index']);
+    // Route::get('/rawat-jalan{id?}', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
+    // Route::post('/rawat-jalan', [RawatJalanController::class, 'store'])->name('rawat-jalan.store');
+    
+
+    Route::prefix(('rawat-jalan'))->group(function () {  
+        Route::get('/', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
+        Route::post('/', [RawatJalanController::class, 'store'])->name('rawat-jalan.store');
+
+    });
+
 
 
     Route::prefix('manajemen-user')->group(function () {
